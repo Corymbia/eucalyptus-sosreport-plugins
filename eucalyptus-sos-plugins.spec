@@ -3,7 +3,7 @@
 
 Summary:       A plugin to sosreport to collect data about Eucalyptus clouds
 Name:          eucalyptus-sos-plugins
-Version:       0.1.8
+Version:       0.2.0
 Release:       0%{?build_id:.%build_id}%{?dist}
 License:       GPLv2+
 Group:         Applications/System
@@ -12,7 +12,7 @@ BuildArch:     noarch
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
-Requires:      sos
+Requires:      sos >= 3
 
 Source0:       %{tarball_basedir}.tar.xz
 
@@ -46,6 +46,9 @@ rm $RPM_BUILD_ROOT/%{python_sitelib}/sos/plugins/__init__.py*
 
 
 %changelog
+* Thu Aug 20 2015 Matt Bacchi <matt.bacchi@hp.com> - 0.2.0
+- Major changes to support sos 3.x api only.  We don't support sos 2.x as of version 0.2.0.
+
 * Wed May 13 2015 Matt Bacchi <matt.bacchi@hp.com> - 0.1.8
 - reworked eucameta.py functionality to prevent sos trying to load it as a plugin
 

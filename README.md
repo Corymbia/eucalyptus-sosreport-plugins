@@ -46,7 +46,7 @@ yum install eucalyptus-sos-plugins
 To install eucalyptus-sosreport-plugins manually you will need to have the following installed:
 
 * git 
-* sosreport compatible with r2.2
+* sos 3.x
 * python-devel 
 * libxml2-python
 * yum groupinstall -y 'Development Tools'
@@ -80,15 +80,15 @@ sosreport --batch --tmp-dir SOMEDIRECTORY
 ```
 
 ## Risks:
-Systems evolve and applications are upgraded. Going forward we need to make sure that we keep in sync with the version of sosreport that is in the mainline repositories. sosreport r2.3 has a lot of syntax changes from r2.2. When the main repos switch to sosreport r2.3+ we will need to rework our plugins to match the newer framework.
-Currently sosreport's github is at version 3.0 of the software.
+Systems evolve and applications are upgraded. Going forward we need to make sure that we keep in sync with the version of sosreport that is in the mainline repositories.
 
+IMPORTANT NOTE: As of eucalyptus-sos-plugins v0.2.0 we only support sosreport 3.x.  We will not be supporting sosreport 2.x at this time.
+ 
 ## Versioning:
-r2.2 branch -> sosreport 2.2 (CentOS 6.4 uses this.)
 
-r2.3 branch -> sosreport 2.3 & 3.0(?) (This is the future.)
+IMPORTANT NOTE: As of eucalyptus-sos-plugins v0.2.0 we only support sosreport 3.x.  We will not be supporting sosreport 2.x at this time.
 
-master branch -> r2.2 branch
+master branch -> sosreport 3.x only
 
 ## Troubleshooting:
 You are invited to point out any problems that might have happened while running the plugins. When submitting an issue please add the following so that we are able to best track down what the issue is.
