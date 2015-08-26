@@ -23,7 +23,7 @@ class eucanode(Plugin, RedHatPlugin):
     """Eucalyptus Cloud - Node Controller
     """
     def checkenabled(self):
-        if self.isInstalled("libvirt"):
+        if self.is_installed("libvirt"):
             return True
         return False
 
@@ -31,9 +31,9 @@ class eucanode(Plugin, RedHatPlugin):
         conf = file('/etc/eucalyptus/eucalyptus.conf')
         for line in conf:
             if 'EDGE' in line:
-                self.addCopySpec("/var/lib/eucalyptus/*.xml")
+                self.add_copy_spec("/var/lib/eucalyptus/*.xml")
 
-        self.collectExtOutput("/usr/bin/virsh list",
+        self.get_cmd_output_now("/usr/bin/virsh list",
                               suggest_filename="virsh-list")
 
         virsh_result = subprocess.Popen("virsh list | tail -n +3",
@@ -44,6 +44,6 @@ class eucanode(Plugin, RedHatPlugin):
                                 skipinitialspace=True,
                                 fieldnames=['id', 'name', 'state'])
         for row in reader:
-            self.collectExtOutput("virsh dumpxml " + row['id'],
+            self.get_cmd_output_now("virsh dumpxml " + row['id'],
                                   suggest_filename=row['name'] + "_xml")
         return

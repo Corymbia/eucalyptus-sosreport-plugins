@@ -22,10 +22,10 @@ class eucacluster(Plugin, RedHatPlugin):
     """
 
     def checkenabled(self):
-        if self.isInstalled("eucalyptus-cc"):
+        if self.is_installed("eucalyptus-cc"):
             return True
         return False
 
     def setup(self):
-        self.addCopySpec("/var/lib/eucalyptus/CC")
+        self.add_copy_spec("/var/lib/eucalyptus/CC")
         return

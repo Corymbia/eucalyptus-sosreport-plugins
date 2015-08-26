@@ -23,8 +23,8 @@ class eucaconsole(Plugin, RedHatPlugin):
     """
     def checkenabled(self):
         if (
-            self.isInstalled("eucalyptus-console") or
-            self.isInstalled("eucaconsole")
+            self.is_installed("eucalyptus-console") or
+            self.is_installed("eucaconsole")
         ):
             return True
         return False
@@ -35,20 +35,20 @@ class eucaconsole(Plugin, RedHatPlugin):
             - configuration file under /etc/eucalyptus-console
             - log file location under /var/log/eucalyptus-console directory
         """
-        if self.isInstalled("eucalyptus-console"):
-            self.addCopySpec("/etc/eucalyptus-console")
+        if self.is_installed("eucalyptus-console"):
+            self.add_copy_spec("/etc/eucalyptus-console")
             """
             Check if /var/log/eucalyptus-console exists (Eucalyptus 3.4.0-1)
             If not present, then Console logs are in /var/log/messages
             """
             if os.path.exists('/var/log/eucalyptus-console'):
-                self.addCopySpec("/var/log/eucalyptus-console/*")
+                self.add_copy_spec("/var/log/eucalyptus-console/*")
         else:
             """
             Grab following for Eucalyptus Console
             - config file under /etc/eucaconsole
             - log file /var/log/eucaconsole.log
             """
-            self.addCopySpec("/etc/eucaconsole")
-            self.addCopySpec("/var/log/eucaconsole.log*")
+            self.add_copy_spec("/etc/eucaconsole")
+            self.add_copy_spec("/var/log/eucaconsole.log*")
         return

@@ -25,39 +25,39 @@ class eucacore(Plugin, RedHatPlugin):
     """
 
     def checkenabled(self):
-        if self.isInstalled("eucalyptus"):
+        if self.is_installed("eucalyptus"):
             return True
         return False
 
     def setup(self):
-        self.addCopySpec("/etc/eucalyptus")
-        self.addCopySpec("/var/log/eucalyptus/*")
-        self.addCopySpec("/var/lib/eucalyptus/keys")
+        self.add_copy_spec("/etc/eucalyptus")
+        self.add_copy_spec("/var/log/eucalyptus/*")
+        self.add_copy_spec("/var/lib/eucalyptus/keys")
         if os.path.isfile('/usr/bin/sha1sum'):
-            self.collectExtOutput("find /var/lib/eucalyptus/keys \
+            self.get_cmd_output_now("find /var/lib/eucalyptus/keys \
                                   -type f -print | xargs -I {} sha1sum {}",
                                   suggest_filename="sha1sum-eucalyptus-keys")
         hprof_list = glob.glob('/var/log/eucalyptus/*.hprof')
         if hprof_list:
-            self.collectExtOutput("rm -rf /var/log/eucalyptus/*.hprof",
+            self.get_cmd_output_now("rm -rf /var/log/eucalyptus/*.hprof",
                                   suggest_filename="hprof-removal")
         if os.path.isfile('/sbin/iptables-save'):
-            self.collectExtOutput("/sbin/iptables-save --counters",
+            self.get_cmd_output_now("/sbin/iptables-save --counters",
                                   suggest_filename="iptables-save-counters")
         if os.path.isfile('/sbin/ebtables-save'):
-            self.collectExtOutput("/sbin/ebtables-save --counters",
+            self.get_cmd_output_now("/sbin/ebtables-save --counters",
                                   suggest_filename="ebtables-save-counters")
         if os.path.isfile('/usr/sbin/ipset'):
-            self.collectExtOutput("/usr/sbin/ipset -s -o xml save",
+            self.get_cmd_output_now("/usr/sbin/ipset -s -o xml save",
                                   suggest_filename="ipset-xml-save")
         if os.path.isfile('/etc/pki/tls/certs/eucalyptus-enterprise.crt'):
-            self.collectExtOutput("openssl x509 -text -in "
+            self.get_cmd_output_now("openssl x509 -text -in "
                                   + "/etc/pki/tls/certs/eucalyptus"
                                   + "-enterprise.crt"
                                   + " | grep -A 2 Validity",
                                   suggest_filename="euca-enterprise-cert"
                                   + "-validity")
-            self.collectExtOutput("openssl x509 -text -in "
+            self.get_cmd_output_now("openssl x509 -text -in "
                                   + "/etc/pki/tls/certs/eucalyptus"
                                   + "-enterprise.crt"
                                   + " | grep -A 14 X509v3",
@@ -69,11 +69,11 @@ class eucacore(Plugin, RedHatPlugin):
         if ((mode.st_uid != 0)
                 or (mode.st_gid != 0)
                 or (oct(mode.st_mode)[-4:] != '1777')):
-            self.collectExtOutput("/bin/ls -ld /tmp",
+            self.get_cmd_output_now("/bin/ls -ld /tmp",
                                   suggest_filename="tmp-dir-mode-fail")
         # gather a recursive listing of /var/lib/eucalyptus, including
         # dot-files
         if os.path.exists('/var/lib/eucalyptus'):
-            self.collectExtOutput("/bin/ls -laR /var/lib/eucalyptus",
+            self.get_cmd_output_now("/bin/ls -laR /var/lib/eucalyptus",
                                   suggest_filename="ls-laR-var-lib-eucalyptus")
         return

@@ -25,11 +25,11 @@ class eucadb(Plugin, RedHatPlugin):
     """
 
     def checkenabled(self):
-        if (self.isInstalled("eucalyptus-cloud")
-                and ((self.isInstalled("postgresql91")
-                      and self.isInstalled("postgresql91-server"))
-                     or (self.isInstalled("postgresql92")
-                         and self.isInstalled("postgresql92-server")))):
+        if (self.is_installed("eucalyptus-cloud")
+                and ((self.is_installed("postgresql91")
+                      and self.is_installed("postgresql91-server"))
+                     or (self.is_installed("postgresql92")
+                         and self.is_installed("postgresql92-server")))):
             return True
         return False
 
@@ -49,10 +49,10 @@ class eucadb(Plugin, RedHatPlugin):
                 stderr=subprocess.PIPE).communicate()
         except OSError, e:
             if 'No such' in e.strerror:
-                self.addDiagnose("Error checking postgres process status")
+                self.add_alert("Error checking postgres process status")
                 raise OSError(e)
             else:
-                self.addDiagnose("Error: %s" % e)
+                self.add_alert("Error: %s" % e)
                 raise OSError(e)
 
         # postgres_chk will always be a 2-element list, where the last element
@@ -61,14 +61,14 @@ class eucadb(Plugin, RedHatPlugin):
         pg_proc = pg_proc.rstrip()    # get rid of the trailing newline, if any
 
         if len(pg_proc) == 0:
-            self.addDiagnose(
+            self.add_alert(
                 "Error: No extant master postgres process running")
             raise
 
         else:
             pg_proc_l = pg_proc.split('\n')
             if len(pg_proc_l) > 1:
-                self.addDiagnose(
+                self.add_alert(
                     "Error: More than one master postgres process running")
                 raise
             else:
@@ -87,7 +87,7 @@ class eucadb(Plugin, RedHatPlugin):
         dump_cmd = "%s -c -o -h %s -p 8777 -U root %s" % (
             pg_dumpbin, db_datapath, db)
         dump_file = db + ".sql"
-        self.collectExtOutput(
+        self.get_cmd_output_now(
             dump_cmd,
             dump_file,
             timeout=600
@@ -142,7 +142,7 @@ class eucadb(Plugin, RedHatPlugin):
                     sdump_cmd = "%s -c -o -h %s -p 8777 -U root %s -n %s" % (
                         pg_dumpbin, db_datapath, "eucalyptus_shared", schema)
                     sdump_file = schema + ".sql"
-                    self.collectExtOutput(
+                    self.get_cmd_output_now(
                         sdump_cmd,
                         sdump_file,
                         timeout=600
@@ -170,7 +170,7 @@ class eucadb(Plugin, RedHatPlugin):
                  db_datapath,
                  select_cmd,
                  "database_events")
-            self.collectExtOutput(
+            self.get_cmd_output_now(
                 sql_cmd,
                 suggest_filename="database_sizes.txt",
                 timeout=600
@@ -184,6 +184,6 @@ class eucadb(Plugin, RedHatPlugin):
         for db_file in dbfiles_l:
             db_fullfile = db_datapath + '/' + db_file
             if os.path.isfile(db_fullfile):
-                self.addCopySpec(db_fullfile)
+                self.get_cmd_output_now(db_fullfile)
 
         return
