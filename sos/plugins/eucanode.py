@@ -33,6 +33,8 @@ class eucanode(Plugin, RedHatPlugin):
             if 'EDGE' in line:
                 self.add_copy_spec("/var/lib/eucalyptus/*.xml")
 
+        self.add_copy_spec("/var/run/eucalyptus")
+
         self.get_cmd_output_now("/usr/bin/virsh list",
                               suggest_filename="virsh-list")
 
