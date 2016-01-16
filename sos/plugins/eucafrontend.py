@@ -37,7 +37,8 @@ class eucafrontend(Plugin, RedHatPlugin):
         return False
 
     def checkversion(self, pkg):
-        package_manager = PackageManager('rpm -qa --queryformat "%{NAME}|%{VERSION}\\n"')
+        package_manager = PackageManager(
+            'rpm -qa --queryformat "%{NAME}|%{VERSION}\\n"')
         all_euca_pkgs = package_manager.get_pkg_list()
         eucapkg = all_euca_pkgs.get(pkg)
         return '.'.join(eucapkg['version'])
@@ -101,8 +102,8 @@ class eucafrontend(Plugin, RedHatPlugin):
         try:
             mkdir_output = tempfile.mkdtemp(dir='/tmp')
         except OSError, e:
-                self.add_alert("Error creating directory under /tmp")
-                raise OSError(e)
+            self.add_alert("Error creating directory under /tmp")
+            raise OSError(e)
 
         if os.path.isfile('/usr/sbin/clcadmin-assume-system-credentials'):
             # Running Euca 4.2.0 or later
@@ -177,7 +178,7 @@ class eucafrontend(Plugin, RedHatPlugin):
                         return access_key
             if access_key is None:
                 self.add_alert("Error grabbing AWS_ACCESS_KEY_ID"
-                                 + " from " + tmp_dir + "/eucarc")
+                               + " from " + tmp_dir + "/eucarc")
                 raise
         except OSError, e:
             error_string = '%s' % e
@@ -201,7 +202,7 @@ class eucafrontend(Plugin, RedHatPlugin):
                         return secret_key
             if secret_key is None:
                 self.add_alert("Error grabbing AWS_SECRET_ACCESS_KEY"
-                                 + " from " + tmp_dir + "/eucarc")
+                               + " from " + tmp_dir + "/eucarc")
                 raise
         except OSError, e:
             error_string = '%s' % e
@@ -225,7 +226,7 @@ class eucafrontend(Plugin, RedHatPlugin):
                         return account_id
             if account_id is None:
                 self.add_alert("Error grabbing EC2_USER_ID "
-                                 + "from " + tmp_dir + "/eucarc")
+                               + "from " + tmp_dir + "/eucarc")
                 raise
         except OSError, e:
             error_string = '%s' % e
@@ -413,7 +414,7 @@ class eucafrontend(Plugin, RedHatPlugin):
             error_string = '%s' % e
             if 'No such' in error_string:
                 self.add_alert("Error creating "
-                                 + "/etc/euca2ools/conf.d directory")
+                               + "/etc/euca2ools/conf.d directory")
                 raise OSError(e)
             elif 'File exist' in error_string:
                 self.add_alert("WARN: %s" % e)
@@ -519,50 +520,50 @@ class eucafrontend(Plugin, RedHatPlugin):
             creds_info = (" -U " + iam_url + " -I "
                           + access_key + " -S " + secret_key)
             self.get_cmd_output_now("/usr/bin/euare-accountaliaslist --delegate "
-                                  + account + creds_info,
-                                  suggest_filename="euare-accountaliaslist-"
-                                  + account)
+                                    + account + creds_info,
+                                    suggest_filename="euare-accountaliaslist-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-accountlistpolicies -a "
-                                  + account + creds_info,
-                                  suggest_filename="euare-accountlistpolicies-"
-                                  + account)
+                                    + account + creds_info,
+                                    suggest_filename="euare-accountlistpolicies-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-userlistbypath --delegate "
-                                  + account + creds_info,
-                                  suggest_filename="euare-userlistbypath-"
-                                  + account)
+                                    + account + creds_info,
+                                    suggest_filename="euare-userlistbypath-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-grouplistbypath --delegate "
-                                  + account + creds_info,
-                                  suggest_filename="euare-grouplistbypath-"
-                                  + account)
+                                    + account + creds_info,
+                                    suggest_filename="euare-grouplistbypath-"
+                                    + account)
         else:
             self.get_cmd_output_now("/usr/bin/euare-accountaliaslist "
-                                  + "--as-account "
-                                  + account + " --region admin@sosreport",
-                                  suggest_filename="euare-accountaliaslist-"
-                                  + account)
+                                    + "--as-account "
+                                    + account + " --region admin@sosreport",
+                                    suggest_filename="euare-accountaliaslist-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-accountlistpolicies -a "
-                                  + account + " -v --region admin@sosreport",
-                                  suggest_filename="euare-accountlistpolicies-"
-                                  + account)
+                                    + account + " -v --region admin@sosreport",
+                                    suggest_filename="euare-accountlistpolicies-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-userlistbypath --as-account "
-                                  + account + " --region admin@sosreport",
-                                  suggest_filename="euare-userlistbypath-"
-                                  + account)
+                                    + account + " --region admin@sosreport",
+                                    suggest_filename="euare-userlistbypath-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-grouplistbypath "
-                                  + "--as-account "
-                                  + account + " --region admin@sosreport",
-                                  suggest_filename="euare-grouplistbypath-"
-                                  + account)
+                                    + "--as-account "
+                                    + account + " --region admin@sosreport",
+                                    suggest_filename="euare-grouplistbypath-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-rolelistbypath "
-                                  + "--as-account "
-                                  + account + " --region admin@sosreport",
-                                  suggest_filename="euare-rolelistbypath-"
-                                  + account)
+                                    + "--as-account "
+                                    + account + " --region admin@sosreport",
+                                    suggest_filename="euare-rolelistbypath-"
+                                    + account)
             self.get_cmd_output_now("/usr/bin/euare-instanceprofilelistbypath "
-                                  + "--as-account "
-                                  + account + " --region admin@sosreport",
-                                  suggest_filename="euare-instprflstbypath-"
-                                  + account)
+                                    + "--as-account "
+                                    + account + " --region admin@sosreport",
+                                    suggest_filename="euare-instprflstbypath-"
+                                    + account)
 
     def get_userlist(self, account, tmp_dir=''):
         """
@@ -624,77 +625,77 @@ class eucafrontend(Plugin, RedHatPlugin):
             else:
                 delegate = "--delegate " + account
             self.get_cmd_output_now("/usr/bin/euare-usergetinfo "
-                                  + delegate + " -u "
-                                  + user + creds_info,
-                                  suggest_filename="euare-usergetinfo-"
-                                  + account + "-" + user)
+                                    + delegate + " -u "
+                                    + user + creds_info,
+                                    suggest_filename="euare-usergetinfo-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-usergetloginprofile "
-                                  + delegate + " -u " + user + creds_info,
-                                  suggest_filename="euare-usergetloginprofile-"
-                                  + account + "-" + user)
+                                    + delegate + " -u " + user + creds_info,
+                                    suggest_filename="euare-usergetloginprofile-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistcerts " + delegate
-                                  + " -u "
-                                  + user + creds_info,
-                                  suggest_filename="euare-userlistcerts-"
-                                  + account + "-" + user)
+                                    + " -u "
+                                    + user + creds_info,
+                                    suggest_filename="euare-userlistcerts-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-usergetattributes "
-                                  + delegate
-                                  + " -u " + user + " --show-extra"
-                                  + creds_info,
-                                  suggest_filename="euare-usergetattributes-"
-                                  + account + "-" + user)
+                                    + delegate
+                                    + " -u " + user + " --show-extra"
+                                    + creds_info,
+                                    suggest_filename="euare-usergetattributes-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistgroups " + delegate
-                                  + " -u " + user + creds_info,
-                                  suggest_filename="euare-userlistgroups-"
-                                  + account + "-" + user)
+                                    + " -u " + user + creds_info,
+                                    suggest_filename="euare-userlistgroups-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistkeys " + delegate
-                                  + " -u " + user + creds_info,
-                                  suggest_filename="euare-userlistkeys-"
-                                  + account + "-" + user)
+                                    + " -u " + user + creds_info,
+                                    suggest_filename="euare-userlistkeys-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistpolicies " + delegate
-                                  + " -u " + user + " -v" + creds_info,
-                                  suggest_filename="euare-userlistpolicies-"
-                                  + account + "-" + user)
+                                    + " -u " + user + " -v" + creds_info,
+                                    suggest_filename="euare-userlistpolicies-"
+                                    + account + "-" + user)
         else:
             self.get_cmd_output_now("/usr/bin/euare-usergetinfo --as-account "
-                                  + account + " -u " + user
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-usergetinfo-"
-                                  + account + "-" + user)
+                                    + account + " -u " + user
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-usergetinfo-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-usergetloginprofile "
-                                  + "--as-account "
-                                  + account + " -u " + user
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-usergetloginprofile-"
-                                  + account + "-" + user)
+                                    + "--as-account "
+                                    + account + " -u " + user
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-usergetloginprofile-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistcerts --as-account "
-                                  + account + " -u " + user
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-userlistcerts-"
-                                  + account + "-" + user)
+                                    + account + " -u " + user
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-userlistcerts-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-usergetattributes "
-                                  + "--as-account "
-                                  + account + " -u " + user
-                                  + " --show-extra --region admin@sosreport",
-                                  suggest_filename="euare-usergetattributes-"
-                                  + account + "-" + user)
+                                    + "--as-account "
+                                    + account + " -u " + user
+                                    + " --show-extra --region admin@sosreport",
+                                    suggest_filename="euare-usergetattributes-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistgroups "
-                                  + "--as-account "
-                                  + account + " -u " + user
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-userlistgroups-"
-                                  + account + "-" + user)
+                                    + "--as-account "
+                                    + account + " -u " + user
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-userlistgroups-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistkeys --as-account "
-                                  + account + " -u " + user
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-userlistkeys-"
-                                  + account + "-" + user)
+                                    + account + " -u " + user
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-userlistkeys-"
+                                    + account + "-" + user)
             self.get_cmd_output_now("/usr/bin/euare-userlistpolicies "
-                                  + "--as-account "
-                                  + account + " -u " + user
-                                  + " -v --region admin@sosreport",
-                                  suggest_filename="euare-userlistpolicies-"
-                                  + account + "-" + user)
+                                    + "--as-account "
+                                    + account + " -u " + user
+                                    + " -v --region admin@sosreport",
+                                    suggest_filename="euare-userlistpolicies-"
+                                    + account + "-" + user)
 
     def get_grouplist(self, account, tmp_dir=''):
         """
@@ -758,27 +759,27 @@ class eucafrontend(Plugin, RedHatPlugin):
             else:
                 delegate = "--delegate " + account
             self.get_cmd_output_now("/usr/bin/euare-grouplistusers "
-                                  + delegate
-                                  + " -g " + group + creds_info,
-                                  suggest_filename="euare-grouplistusers-"
-                                  + account + "-" + group)
+                                    + delegate
+                                    + " -g " + group + creds_info,
+                                    suggest_filename="euare-grouplistusers-"
+                                    + account + "-" + group)
             self.get_cmd_output_now("/usr/bin/euare-grouplistpolicies "
-                                  + delegate
-                                  + " -g " + group + " -v" + creds_info,
-                                  suggest_filename="euare-grouplistpolicies-"
-                                  + account + "-" + group)
+                                    + delegate
+                                    + " -g " + group + " -v" + creds_info,
+                                    suggest_filename="euare-grouplistpolicies-"
+                                    + account + "-" + group)
         else:
             self.get_cmd_output_now("/usr/bin/euare-grouplistusers --as-account "
-                                  + account + " -g " + group
-                                  + " --region admin@sosreport",
-                                  suggest_filename="euare-grouplistusers-"
-                                  + account + "-" + group)
+                                    + account + " -g " + group
+                                    + " --region admin@sosreport",
+                                    suggest_filename="euare-grouplistusers-"
+                                    + account + "-" + group)
             self.get_cmd_output_now("/usr/bin/euare-grouplistpolicies \
                                   --as-account "
-                                  + account + " -g " + group
-                                  + " -v --region admin@sosreport",
-                                  suggest_filename="euare-grouplistpolicies-"
-                                  + account + "-" + group)
+                                    + account + " -g " + group
+                                    + " -v --region admin@sosreport",
+                                    suggest_filename="euare-grouplistpolicies-"
+                                    + account + "-" + group)
 
     def get_rolelist(self, account, tmp_dir=''):
         """
@@ -813,16 +814,16 @@ class eucafrontend(Plugin, RedHatPlugin):
         Grab the resources of the role in the Euare account passed in
         """
         self.get_cmd_output_now("/usr/bin/euare-rolelistpolicies --as-account "
-                              + account + " -r " + role
-                              + " --region admin@sosreport",
-                              suggest_filename="euare-rolelistpolicies-"
-                              + account + "-" + role)
+                                + account + " -r " + role
+                                + " --region admin@sosreport",
+                                suggest_filename="euare-rolelistpolicies-"
+                                + account + "-" + role)
         self.get_cmd_output_now("/usr/bin/euare-instanceprofilelistforrole "
-                              + "--as-account "
-                              + account + " -r " + role
-                              + " --region admin@sosreport",
-                              suggest_filename="euare-instprofilelistforrole-"
-                              + account + "-" + role)
+                                + "--as-account "
+                                + account + " -r " + role
+                                + " --region admin@sosreport",
+                                suggest_filename="euare-instprofilelistforrole-"
+                                + account + "-" + role)
 
     def get_instprofile(self, account, tmp_dir=''):
         """
@@ -857,12 +858,12 @@ class eucafrontend(Plugin, RedHatPlugin):
         Grab the resources of instances profile in Euare account passed
         """
         self.get_cmd_output_now("/usr/bin/euare-instanceprofilegetattributes "
-                              + "--as-account "
-                              + account + " -s " + profile
-                              + " -r "
-                              + " --region admin@sosreport",
-                              suggest_filename="euare-instprofileattributes-"
-                              + account + "-" + profile)
+                                + "--as-account "
+                                + account + " -s " + profile
+                                + " -r "
+                                + " --region admin@sosreport",
+                                suggest_filename="euare-instprofileattributes-"
+                                + account + "-" + profile)
 
     def get_stacks(self):
         """
@@ -902,23 +903,23 @@ class eucafrontend(Plugin, RedHatPlugin):
         stack_name = entry[5].strip().split("/")[1]
         stack_id = entry[5].strip().split("/")[2]
         self.get_cmd_output_now("/usr/bin/euform-list-stack-resources "
-                              + stack
-                              + " --region admin@sosreport",
-                              suggest_filename="euform-lst-stack-res-"
-                              + stack_name
-                              + "-" + stack_id)
+                                + stack
+                                + " --region admin@sosreport",
+                                suggest_filename="euform-lst-stack-res-"
+                                + stack_name
+                                + "-" + stack_id)
         self.get_cmd_output_now("/usr/bin/euform-describe-stack-resources "
-                              + "-n " + stack
-                              + " --region admin@sosreport",
-                              suggest_filename="euform-des-stack-res-"
-                              + stack_name
-                              + "-" + stack_id)
+                                + "-n " + stack
+                                + " --region admin@sosreport",
+                                suggest_filename="euform-des-stack-res-"
+                                + stack_name
+                                + "-" + stack_id)
         self.get_cmd_output_now("/usr/bin/euform-describe-stack-events "
-                              + stack
-                              + " --region admin@sosreport",
-                              suggest_filename="euform-des-stack-events-"
-                              + stack_name
-                              + "-" + stack_id)
+                                + stack
+                                + " --region admin@sosreport",
+                                suggest_filename="euform-des-stack-events-"
+                                + stack_name
+                                + "-" + stack_id)
 
     def get_instance_statuses(self):
         """
@@ -945,12 +946,12 @@ class eucafrontend(Plugin, RedHatPlugin):
             if re.search('INSTANCE', inst_info):
                 inst_id = inst_info.split()[1]
                 self.get_cmd_output_now("/usr/bin/euca"
-                                      + "-describe-instance-status "
-                                      + inst_id
-                                      + " --region admin@sosreport",
-                                      suggest_filename="euca-des"
-                                      + "-inst-status-"
-                                      + "-" + inst_id)
+                                        + "-describe-instance-status "
+                                        + inst_id
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-des"
+                                        + "-inst-status-"
+                                        + "-" + inst_id)
 
     def cleanup(self, tmp_dir):
         """
@@ -958,9 +959,9 @@ class eucafrontend(Plugin, RedHatPlugin):
         """
         self.add_alert("### Cleanup credentials ###")
         self.get_cmd_output_now("rm -rf " + tmp_dir,
-                              suggest_filename="cleanup-tmpeucacreds")
+                                suggest_filename="cleanup-tmpeucacreds")
         self.get_cmd_output_now("rm -rf /etc/euca2ools/conf.d/sos-euca2ools.ini",
-                              suggest_filename="cleanup-sos-euca2ools-config")
+                                suggest_filename="cleanup-sos-euca2ools-config")
 
     def eucalyptus_core(self, tmp_dir):
         self.add_alert("### Grabbing eucalyptus/admin credentials ###")
@@ -969,62 +970,62 @@ class eucafrontend(Plugin, RedHatPlugin):
         empyrean_url = "http://127.0.0.1:8773/services/Empyrean/"
         creds_info = " -I " + access_key + " -S " + secret_key
         self.get_cmd_output_now("/usr/sbin/euca-describe-arbitrators -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-arbitrators")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-arbitrators")
         self.get_cmd_output_now("/usr/sbin/euca-describe-clouds -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-clouds")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-clouds")
         self.get_cmd_output_now("/usr/sbin/euca-describe-clusters -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-clusters")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-clusters")
         self.get_cmd_output_now("/usr/sbin/euca-describe-components -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-components")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-components")
         self.get_cmd_output_now("/usr/sbin/euca-describe-nodes -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-nodes")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-nodes")
         self.get_cmd_output_now("/usr/sbin/euca-describe-properties -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-properties")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-properties")
         self.get_cmd_output_now("/usr/sbin/euca-describe-services --all -E",
-                              suggest_filename="euca-describe-services-all")
+                                suggest_filename="euca-describe-services-all")
         self.get_cmd_output_now("/usr/sbin/euca-describe-storage-controllers -U "
-                              + empyrean_url + creds_info,
-                              suggest_filename="euca-describe-storage-ctrls")
+                                + empyrean_url + creds_info,
+                                suggest_filename="euca-describe-storage-ctrls")
         if self.is_installed("eucalyptus-enterprise-vmware-broker"):
             self.get_cmd_output_now("/usr/sbin/euca-describe-vmware-brokers -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-vmware-brks")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-vmware-brks")
         euca2ools_version = self.checkversion('euca2ools')
         if re.match('^3+', euca2ools_version):
             self.get_cmd_output_now("/usr/sbin/euca-describe-cloudwatch -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-cloudwatch")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-cloudwatch")
             self.get_cmd_output_now("/usr/sbin/euca-describe-compute -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-compute")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-compute")
             self.get_cmd_output_now("/usr/sbin/euca-describe-euare -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-euare")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-euare")
             self.get_cmd_output_now("/usr/sbin/euca-describe-loadbalancing -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe"
-                                  + "-loadbalancing")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe"
+                                    + "-loadbalancing")
             self.get_cmd_output_now("/usr/sbin/euca-describe-object"
-                                  + "-storage-gateways -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-osgs")
+                                    + "-storage-gateways -U "
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-osgs")
             self.get_cmd_output_now("/usr/sbin/euca-describe-tokens -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-tokens")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-tokens")
             self.get_cmd_output_now("/usr/sbin/euca-describe-walrusbackends -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe"
-                                  + "-walrusbackends")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe"
+                                    + "-walrusbackends")
         else:
             self.get_cmd_output_now("/usr/sbin/euca-describe-walruses -U "
-                                  + empyrean_url + creds_info,
-                                  suggest_filename="euca-describe-walruses")
+                                    + empyrean_url + creds_info,
+                                    suggest_filename="euca-describe-walruses")
         self.get_cmd_output_now("/usr/bin/euca-version")
 
     def eucalyptus_ec2(self, tmp_dir):
@@ -1037,42 +1038,43 @@ class eucafrontend(Plugin, RedHatPlugin):
             creds_info = ("-U " + ec2_url + " --access-key "
                           + access_key + " --secret-key " + secret_key)
             self.get_cmd_output_now("/usr/bin/euca-describe-addresses verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-addrs-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-addrs-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-regions "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-regions")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-regions")
             self.get_cmd_output_now("/usr/bin/euca-describe-availability-zones "
-                                  + "verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-a-z-v")
+                                    + "verbose "
+                                    + creds_info,
+                                    suggest_filename="euca-describe-a-z-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-instance-types "
-                                  + "--show-capacity --by-zone " + creds_info,
-                                  suggest_filename="euca-describe-inst-types")
+                                    + "--show-capacity --by-zone " +
+                                    creds_info,
+                                    suggest_filename="euca-describe-inst-types")
             self.get_cmd_output_now("/usr/bin/euca-describe-groups verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-grps-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-grps-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-images --all "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-imgs-all")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-imgs-all")
             euca2ools_version = self.checkversion('euca2ools')
             if re.match('^2.1+', euca2ools_version):
                 self.get_cmd_output_now("/usr/bin/eustore-describe-images -v "
-                                      + creds_info,
-                                      suggest_filename="eustore-describe"
-                                      + "-images")
+                                        + creds_info,
+                                        suggest_filename="eustore-describe"
+                                        + "-images")
             self.get_cmd_output_now("/usr/bin/euca-describe-instances verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-inst-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-inst-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-keypairs verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-kyprs-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-kyprs-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-snapshots verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-snpshts-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-snpshts-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-volumes verbose "
-                                  + creds_info,
-                                  suggest_filename="euca-describe-vols-v")
+                                    + creds_info,
+                                    suggest_filename="euca-describe-vols-v")
         else:
             if not os.path.isfile('/etc/euca2ools/conf.d/sos-euca2ools.ini'):
                 self.add_alert("### Setting up sos-euca2ools.ini file ###")
@@ -1082,78 +1084,78 @@ class eucafrontend(Plugin, RedHatPlugin):
 
             self.add_alert("### Grabbing Cloud Resource Data ###")
             self.get_cmd_output_now("/usr/bin/euca-describe-addresses verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-addrs-v")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-addrs-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-availability-zones "
-                                  + "verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-a-z-v")
+                                    + "verbose "
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-a-z-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-instance-types"
-                                  + " --show-capacity --by-zone "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-inst-types")
+                                    + " --show-capacity --by-zone "
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-inst-types")
             self.get_cmd_output_now("/usr/bin/euca-describe-groups verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-grps-v")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-grps-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-images --all "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-images-all")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-images-all")
             self.get_cmd_output_now("/usr/bin/euca-describe-regions "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-regions")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-regions")
             self.get_cmd_output_now("/usr/bin/euca-describe-instances verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-insts-v")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-insts-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-keypairs verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-kyprs-v")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-kyprs-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-volumes verbose "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-vols-v")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-vols-v")
             self.get_cmd_output_now("/usr/bin/euca-describe-tags "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euca-describe-tags")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euca-describe-tags")
             self.get_cmd_output_now("/usr/bin/euca-describe-conversion-tasks"
-                                  + " verbose --region admin@sosreport",
-                                  suggest_filename="euca-desc-con-tasks-v")
+                                    + " verbose --region admin@sosreport",
+                                    suggest_filename="euca-desc-con-tasks-v")
             euca_version = self.checkversion('eucalyptus')
             if re.match('^4+', euca_version):
                 self.get_instance_statuses()
             if re.match('^3.2+', euca2ools_version):
                 self.get_cmd_output_now("/usr/bin/euca-describe-vpcs "
-                                      + "verbose "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-"
-                                      + "describe-vpcs-v")
+                                        + "verbose "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-"
+                                        + "describe-vpcs-v")
                 self.get_cmd_output_now("/usr/bin/euca-describe-"
-                                      + "network-acls "
-                                      + "verbose "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-"
-                                      + "describe-network-acls-v")
+                                        + "network-acls "
+                                        + "verbose "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-"
+                                        + "describe-network-acls-v")
                 self.get_cmd_output_now("/usr/bin/euca-describe-"
-                                      + "route-tables "
-                                      + "verbose "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-"
-                                      + "describe-route-tables-v")
+                                        + "route-tables "
+                                        + "verbose "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-"
+                                        + "describe-route-tables-v")
                 self.get_cmd_output_now("/usr/bin/euca-describe-"
-                                      + "subnets "
-                                      + "verbose "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-"
-                                      + "describe-subnets-v")
+                                        + "subnets "
+                                        + "verbose "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-"
+                                        + "describe-subnets-v")
                 self.get_cmd_output_now("/usr/bin/euca-describe-snapshots "
-                                      + " --all "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-describe"
-                                      + "-snpshts-v")
+                                        + " --all "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-describe"
+                                        + "-snpshts-v")
             else:
                 self.get_cmd_output_now("/usr/bin/euca-describe-snapshots "
-                                      + " verbose "
-                                      + "--region admin@sosreport",
-                                      suggest_filename="euca-describe"
-                                      + "-snpshts-v")
+                                        + " verbose "
+                                        + "--region admin@sosreport",
+                                        suggest_filename="euca-describe"
+                                        + "-snpshts-v")
 
     def eucalyptus_iam(self, tmp_dir):
         self.add_alert("### Grabbing version of euca2ools ###")
@@ -1163,8 +1165,9 @@ class eucafrontend(Plugin, RedHatPlugin):
             secret_key = self.get_secret_key(tmp_dir)
             iam_url = self.get_iam_url(tmp_dir)
             self.get_cmd_output_now("/usr/bin/euare-accountlist -U " + iam_url
-                                  + " -I " + access_key + " -S " + secret_key,
-                                  suggest_filename="euare-accountlist")
+                                    + " -I " + access_key +
+                                    " -S " + secret_key,
+                                    suggest_filename="euare-accountlist")
             for account in self.get_accountlist(tmp_dir):
                 self.get_account_info(account, tmp_dir)
                 for user in self.get_userlist(account, tmp_dir):
@@ -1179,8 +1182,8 @@ class eucafrontend(Plugin, RedHatPlugin):
                 self.add_copy_spec("/tmp/eucacreds")
 
             self.get_cmd_output_now("/usr/bin/euare-accountlist "
-                                  + "--region admin@sosreport",
-                                  suggest_filename="euare-accountlist")
+                                    + "--region admin@sosreport",
+                                    suggest_filename="euare-accountlist")
             for account in self.get_accountlist():
                 self.get_account_info(account)
                 for user in self.get_userlist(account):
@@ -1194,63 +1197,63 @@ class eucafrontend(Plugin, RedHatPlugin):
 
     def eucalyptus_autoscaling(self):
         self.get_cmd_output_now("/usr/bin/euscale-describe-auto"
-                              + "-scaling-instances"
-                              + " verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euscale-describe-a-s-insts-v")
+                                + "-scaling-instances"
+                                + " verbose "
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euscale-describe-a-s-insts-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-auto-scaling-groups"
-                              + " verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euscale-describe-a-s-grps-v")
+                                + " verbose "
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euscale-describe-a-s-grps-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-launch-configs"
-                              + " verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euscale-describe-l-cnfs-v")
+                                + " verbose "
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euscale-describe-l-cnfs-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-notification"
-                              + "-configurations"
-                              + " verbose "
-                              + "--region admin@sosreport",
-                              suggest_filename="euscale-describe-not-cnfs-v")
+                                + "-configurations"
+                                + " verbose "
+                                + "--region admin@sosreport",
+                                suggest_filename="euscale-describe-not-cnfs-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-policies"
-                              + " verbose --show-long "
-                              + "--region admin@sosreport",
-                              suggest_filename="euscale-describe-pols-v")
+                                + " verbose --show-long "
+                                + "--region admin@sosreport",
+                                suggest_filename="euscale-describe-pols-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-scaling-activities"
-                              + " verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euscale-describe-s-a-v")
+                                + " verbose "
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euscale-describe-s-a-v")
         self.get_cmd_output_now("/usr/bin/euscale-describe-scheduled-actions"
-                              + " verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euscale-describe-sch-a-v")
+                                + " verbose "
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euscale-describe-sch-a-v")
 
     def eucalyptus_elb(self):
         self.get_cmd_output_now("/usr/bin/eulb-describe-lb-policies verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="eulb-describe-lb-pols-v")
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="eulb-describe-lb-pols-v")
         self.get_cmd_output_now("/usr/bin/eulb-describe-lb-policy-types"
-                              + " verbose --show-long "
-                              + "--region admin@sosreport",
-                              suggest_filename="eulb-describe-lb-pol-types-v")
+                                + " verbose --show-long "
+                                + "--region admin@sosreport",
+                                suggest_filename="eulb-describe-lb-pol-types-v")
         self.get_cmd_output_now("/usr/bin/eulb-describe-lbs verbose"
-                              + " verbose --show-long "
-                              + "--region admin@sosreport",
-                              suggest_filename="eulb-describe-lbs-v")
+                                + " verbose --show-long "
+                                + "--region admin@sosreport",
+                                suggest_filename="eulb-describe-lbs-v")
 
     def eucalyptus_cloudwatch(self):
         self.get_cmd_output_now("/usr/bin/euwatch-describe-alarms"
-                              + " verbose --show-long "
-                              + "--region admin@sosreport",
-                              suggest_filename="euwatch-describe-alrms-v")
+                                + " verbose --show-long "
+                                + "--region admin@sosreport",
+                                suggest_filename="euwatch-describe-alrms-v")
         self.get_cmd_output_now("/usr/bin/euwatch-describe-alarm-history"
-                              + " verbose --show-long "
-                              + "--region admin@sosreport",
-                              suggest_filename="euwatch-describe-alrm-hist-v")
+                                + " verbose --show-long "
+                                + "--region admin@sosreport",
+                                suggest_filename="euwatch-describe-alrm-hist-v")
 
     def eucalyptus_cloudformation(self):
         self.get_cmd_output_now("/usr/bin/euform-describe-stacks verbose "
-                              + "--show-long --region admin@sosreport",
-                              suggest_filename="euform-describe-stacks-v")
+                                + "--show-long --region admin@sosreport",
+                                suggest_filename="euform-describe-stacks-v")
         for stack in self.get_stacks():
             self.get_cloudformation_resources(stack)
 
