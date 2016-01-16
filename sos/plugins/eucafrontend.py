@@ -104,37 +104,64 @@ class eucafrontend(Plugin, RedHatPlugin):
                 self.add_alert("Error creating directory under /tmp")
                 raise OSError(e)
 
-        getcreds_cmd = ["/usr/sbin/euca-get-credentials",
-                        "-a", "eucalyptus", "-u", "admin",
-                        mkdir_output + "/admin.zip"]
-        unzip_cmd = ["/usr/bin/unzip",
-                     mkdir_output + "/admin.zip",
-                     "-d", mkdir_output]
-        try:
-            subprocess.Popen(getcreds_cmd,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE).communicate()
-        except OSError, e:
-            error_string = '%s' % e
-            if 'No such' in error_string:
-                self.add_alert("Error grabbing \
-                                 eucalyptus/admin creds. Is CLC up?")
-                raise OSError(e)
-            else:
-                self.add_alert("Error: %s" % e)
-                raise OSError(e)
-        try:
-            subprocess.Popen(unzip_cmd,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE).communicate()
-        except OSError, e:
-            error_string = '%s' % e
-            if 'No such' in error_string:
-                self.add_alert("Error unzipping admin.zip")
-                raise OSError(e)
-            else:
-                self.add_alert("Error: %s" % e)
-                raise OSError(e)
+        if os.path.isfile('/usr/sbin/clcadmin-assume-system-credentials'):
+            # Running Euca 4.2.0 or later
+            creds_dir = mkdir_output + "/admin"
+            os.mkdir(creds_dir, 0700)
+            getcreds_cmd = ["/usr/sbin/clcadmin-assume-system-credentials",
+                            ">", creds_dir + "eucarc"]
+            # If the CLC is down, then we see this error:
+            # # /usr/sbin/clcadmin-assume-system-credentials
+            # psql: could not connect to server: Connection refused
+            #        Is the server running on host "127.0.0.1" and accepting
+            #        TCP/IP connections on port 8777?
+            try:
+                subprocess.Popen(getcreds_cmd,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE).communicate()
+            except OSError, e:
+                error_string = '%s' % e
+                if 'could not connect' in error_string:
+                    self.add_alert("Error grabbing \
+                                    system creds. Is PostgreSQL up?")
+                    raise OSError(e)
+                else:
+                    self.add_alert("Error: %s" % e)
+                    raise OSError(e)
+
+        else:
+            # Dealing with a pre-4.2.x version
+            getcreds_cmd = ["/usr/sbin/euca-get-credentials",
+                            "-a", "eucalyptus", "-u", "admin",
+                            mkdir_output + "/admin.zip"]
+            unzip_cmd = ["/usr/bin/unzip",
+                         mkdir_output + "/admin.zip",
+                         "-d", mkdir_output]
+            try:
+                subprocess.Popen(getcreds_cmd,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE).communicate()
+            except OSError, e:
+                error_string = '%s' % e
+                if 'No such' in error_string:
+                    self.add_alert("Error grabbing \
+                                     eucalyptus/admin creds. Is CLC up?")
+                    raise OSError(e)
+                else:
+                    self.add_alert("Error: %s" % e)
+                    raise OSError(e)
+            try:
+                subprocess.Popen(unzip_cmd,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE).communicate()
+            except OSError, e:
+                error_string = '%s' % e
+                if 'No such' in error_string:
+                    self.add_alert("Error unzipping admin.zip")
+                    raise OSError(e)
+                else:
+                    self.add_alert("Error: %s" % e)
+                    raise OSError(e)
         return mkdir_output
 
     def get_access_key(self, tmp_dir):
