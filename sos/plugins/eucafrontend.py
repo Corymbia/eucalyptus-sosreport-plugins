@@ -107,28 +107,29 @@ class eucafrontend(Plugin, RedHatPlugin):
 
         if os.path.isfile('/usr/sbin/clcadmin-assume-system-credentials'):
             # Running Euca 4.2.0 or later
-            creds_dir = mkdir_output + "/admin"
-            os.mkdir(creds_dir, 0700)
-            getcreds_cmd = ["/usr/sbin/clcadmin-assume-system-credentials",
-                            ">", creds_dir + "eucarc"]
+            #creds_dir = mkdir_output + "/admin"
+            #os.mkdir(creds_dir, 0700)
+            getcreds_cmd = ["/usr/sbin/clcadmin-assume-system-credentials"]
             # If the CLC is down, then we see this error:
             # # /usr/sbin/clcadmin-assume-system-credentials
             # psql: could not connect to server: Connection refused
             #        Is the server running on host "127.0.0.1" and accepting
             #        TCP/IP connections on port 8777?
-            try:
-                subprocess.Popen(getcreds_cmd,
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE).communicate()
-            except OSError, e:
-                error_string = '%s' % e
-                if 'could not connect' in error_string:
-                    self.add_alert("Error grabbing \
-                                    system creds. Is PostgreSQL up?")
-                    raise OSError(e)
-                else:
-                    self.add_alert("Error: %s" % e)
-                    raise OSError(e)
+            creds_out = mkdir_output + "/eucarc"
+            with open(creds_out, 'w') as output:
+                try:
+                    subprocess.Popen(getcreds_cmd,
+                                     stdout=output,
+                                     stderr=subprocess.PIPE).communicate()
+                except OSError, e:
+                    error_string = '%s' % e
+                    if 'could not connect' in error_string:
+                        self.add_alert("Error grabbing \
+                                        system creds. Is PostgreSQL up?")
+                        raise OSError(e)
+                    else:
+                        self.add_alert("Error: %s" % e)
+                        raise OSError(e)
 
         else:
             # Dealing with a pre-4.2.x version
@@ -223,11 +224,14 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export EC2_USER_ID", line):
                         name, var = line.partition("=")[::2]
                         account_id = var.replace('\'', '').strip()
-                        return account_id
-            if account_id is None:
-                self.add_alert("Error grabbing EC2_USER_ID "
-                               + "from " + tmp_dir + "/eucarc")
-                raise
+                    else:
+                        # If not found, then we must be running version >=4.2
+                        account_id = ''
+                    return account_id
+            #if account_id is None:
+            #    self.add_alert("Error grabbing EC2_USER_ID "
+            #                   + "from " + tmp_dir + "/eucarc")
+            #    raise
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
