@@ -251,7 +251,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export S3_URL", line):
                         name, var = line.partition("=")[::2]
                         s3_url = var.strip()
-                        return s3_url
+                    else:
+                        s3_url = "http://127.0.0.1:8773/services/objectstorage/"
+                    return s3_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -271,7 +273,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export EC2_URL", line):
                         name, var = line.partition("=")[::2]
                         ec2_url = var.strip()
-                        return ec2_url
+                    else:
+                        ec2_url = "http://127.0.0.1:8773/services/compute/"
+                    return ec2_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -296,7 +300,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search(search_string, line):
                         name, var = line.partition("=")[::2]
                         iam_url = var.strip()
-                        return iam_url
+                    else:
+                        iam_url = "http://127.0.0.1:8773/services/Euare/"
+                    return iam_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -316,7 +322,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export AWS_AUTO_SCALING", line):
                         name, var = line.partition("=")[::2]
                         autoscale_url = var.strip()
-                        return autoscale_url
+                    else:
+                        autoscale_url = "http://127.0.0.1:8773/services/AutoScaling/"
+                    return autoscale_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -336,7 +344,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export AWS_ELB", line):
                         name, var = line.partition("=")[::2]
                         elb_url = var.strip()
-                        return elb_url
+                    else:
+                        elb_url = "http://127.0.0.1:8773/services/LoadBalancing/"
+                    return elb_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -356,7 +366,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export AWS_CLOUDWATCH", line):
                         name, var = line.partition("=")[::2]
                         cloudwatch_url = var.strip()
-                        return cloudwatch_url
+                    else:
+                        cloudwatch_url = "http://127.0.0.1:8773/services/CloudWatch/"
+                    return cloudwatch_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -376,7 +388,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export TOKEN", line):
                         name, var = line.partition("=")[::2]
                         sts_url = var.strip()
-                        return sts_url
+                    else:
+                        sts_url = "http://127.0.0.1:8773/services/Tokens/"
+                    return sts_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
@@ -396,7 +410,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                     if re.search("^export AWS_CLOUDFORMATION", line):
                         name, var = line.partition("=")[::2]
                         cloudformation_url = var.strip()
-                        return cloudformation_url
+                    else:
+                        cloudformation_url = "http://127.0.0.1:8773/services/CloudFormation/"
+                    return cloudformation_url
         except OSError, e:
             error_string = '%s' % e
             if 'No such' in error_string:
