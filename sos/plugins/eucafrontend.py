@@ -229,7 +229,7 @@ class eucafrontend(Plugin, RedHatPlugin):
                         # If not found, then we must be running version >=4.2
                         account_id = ''
                     return account_id
-            #if account_id is None:
+            # if account_id is None:
             #    self.add_alert("Error grabbing EC2_USER_ID "
             #                   + "from " + tmp_dir + "/eucarc")
             #    raise
@@ -1051,13 +1051,15 @@ class eucafrontend(Plugin, RedHatPlugin):
                 self.get_cmd_output_now("/usr/bin/euctl -U "
                                         + empyrean_url
                                         + " --region admin@sosreport"
-                                        + " --dump cloud.network.network_configuration"
+                                        +
+                                        " --dump cloud.network.network_configuration"
                                         + " --format json",
                                         suggest_filename="euctl-cloud.network.network_configuration.json")
                 self.get_cmd_output_now("/usr/bin/euctl -U "
                                         + empyrean_url
                                         + " --region admin@sosreport"
-                                        + " --dump cloud.network.network_configuration"
+                                        +
+                                        " --dump cloud.network.network_configuration"
                                         + " --format yaml",
                                         suggest_filename="euctl-cloud.network.network_configuration.yaml")
             if os.path.exists("/usr/bin/euserv-describe-services"):
