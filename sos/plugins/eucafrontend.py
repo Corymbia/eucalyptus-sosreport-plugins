@@ -17,6 +17,7 @@ from sos.policies import PackageManager
 
 from sos.plugins import Plugin, RedHatPlugin
 import os
+import os.path
 import subprocess
 import tempfile
 import re
@@ -1042,6 +1043,54 @@ class eucafrontend(Plugin, RedHatPlugin):
                                     + empyrean_url + creds_info,
                                     suggest_filename="euca-describe"
                                     + "-walrusbackends")
+            if os.path.exists("/usr/bin/euctl"):
+                self.get_cmd_output_now("/usr/bin/euctl -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euctl-all")
+                self.get_cmd_output_now("/usr/bin/euctl -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport"
+                                        + " --dump cloud.network.network_configuration"
+                                        + " --format json",
+                                        suggest_filename="euctl-cloud.network.network_configuration.json")
+                self.get_cmd_output_now("/usr/bin/euctl -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport"
+                                        + " --dump cloud.network.network_configuration"
+                                        + " --format yaml",
+                                        suggest_filename="euctl-cloud.network.network_configuration.yaml")
+            if os.path.exists("/usr/bin/euserv-describe-services"):
+                self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
+                                        + empyrean_url
+                                        + " --by-type"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-services--by-type")
+                self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
+                                        + empyrean_url
+                                        + " --by-zone"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-services--by-zone")
+                self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
+                                        + empyrean_url
+                                        + " --by-host"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-services--by-host")
+                self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
+                                        + empyrean_url
+                                        + " --expert"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-services--expert")
+            if os.path.exists("/usr/bin/euserv-describe-node-controllers"):
+                self.get_cmd_output_now("/usr/bin/euserv-describe-node-controllers -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-node-controllers")
+            if os.path.exists("/usr/bin/euserv-describe-service-types"):
+                self.get_cmd_output_now("/usr/bin/euserv-describe-service-types -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euserv-describe-service-types")
         else:
             self.get_cmd_output_now("/usr/sbin/euca-describe-walruses -U "
                                     + empyrean_url + creds_info,
