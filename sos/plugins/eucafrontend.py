@@ -1219,6 +1219,33 @@ class eucafrontend(Plugin, RedHatPlugin):
                                         + "--region admin@sosreport",
                                         suggest_filename="euca-describe"
                                         + "-snpshts-v")
+                self.get_cmd_output_now("/usr/bin/euca-describe-account-attributes"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-account-attributes")
+                self.get_cmd_output_now("/usr/bin/euca-describe-customer-gateways"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-customer-gateways")
+                self.get_cmd_output_now("/usr/bin/euca-describe-dhcp-options"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-dhcp-options")
+                self.get_cmd_output_now("/usr/bin/euca-describe-internet-gateways"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-internet-gateways")
+                self.get_cmd_output_now("/usr/bin/euca-describe-network-interfaces"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-network-interfaces")
+                self.get_cmd_output_now("/usr/bin/euca-describe-vpc-peering-connections"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-vpc-peering-connections")
+                self.get_cmd_output_now("/usr/bin/euca-describe-vpn-connections"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-vpn-connections")
+                self.get_cmd_output_now("/usr/bin/euca-describe-vpn-gateways"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-vpn-gateways")
+                self.get_cmd_output_now("/usr/bin/euca-describe-vpn-gateways"
+                                        + " --region admin@sosreport",
+                                        suggest_filename="euca-describe-vpn-gateways")
             else:
                 self.get_cmd_output_now("/usr/bin/euca-describe-snapshots "
                                         + " verbose "
@@ -1318,6 +1345,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                                 + " verbose --show-long "
                                 + "--region admin@sosreport",
                                 suggest_filename="euwatch-describe-alrm-hist-v")
+        self.get_cmd_output_now("/usr/bin/euwatch-list-metrics"
+                                + " --region admin@sosreport",
+                                suggest_filename="euwatch-list-metrics")
 
     def eucalyptus_cloudformation(self):
         self.get_cmd_output_now("/usr/bin/euform-describe-stacks verbose "
