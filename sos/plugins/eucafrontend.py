@@ -1190,7 +1190,7 @@ class eucafrontend(Plugin, RedHatPlugin):
             euca_version = self.checkversion('eucalyptus')
             if re.match('^4+', euca_version):
                 self.get_instance_statuses()
-            if re.match('^3.2+', euca2ools_version):
+            if re.match('^3', euca2ools_version):
                 self.get_cmd_output_now("/usr/bin/euca-describe-vpcs "
                                         + "verbose "
                                         + "--region admin@sosreport",
@@ -1322,6 +1322,9 @@ class eucafrontend(Plugin, RedHatPlugin):
                                 + " verbose "
                                 + "--show-long --region admin@sosreport",
                                 suggest_filename="euscale-describe-sch-a-v")
+        self.get_cmd_output_now("/usr/bin/euscale-describe-termination-policy-types"
+                                + " --region admin@sosreport",
+                                suggest_filename="euscale-describe-termination-policy-types")
 
     def eucalyptus_elb(self):
         self.get_cmd_output_now("/usr/bin/eulb-describe-lb-policies verbose "
