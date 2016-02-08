@@ -54,7 +54,7 @@ To install eucalyptus-sosreport-plugins manually you will need to have the follo
 ```shell
 git clone https://github.com/eucalyptus/eucalyptus-sosreport-plugins.git
 cd eucalyptus-sosreport-plugins
-make rpm
+python setup.py bdist_rpm
 sudo yum install dist-build/noarch/eucalyptus-sos-plugins-<version>.el6.noarch.rpm
 ```
 
