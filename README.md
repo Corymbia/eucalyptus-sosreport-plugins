@@ -28,11 +28,10 @@ It is preferred to install eucalyptus-sosreport-plugins via the package but if n
 
 #### Package Installation:
 ---------------------
-Add the Eucalyptus Tools Repository. 
+Add the Eucalyptus release Repository. 
 
 ```shell
-cd /etc/yum.repos.d
-wget 'http://downloads.eucalyptus.com/software/tools/tools.repo'
+yum install http://downloads.eucalyptus.com/software/eucalyptus/4.2/centos/6/x86_64/eucalyptus-release-4.2-1.el6.noarch.rpm
 ```
 
 Install the eucalyptus-sos-tools package which will install the sos package if it is not already installed.
