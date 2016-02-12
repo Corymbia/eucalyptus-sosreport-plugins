@@ -33,6 +33,7 @@ class eucacore(Plugin, RedHatPlugin):
         self.add_copy_spec("/etc/eucalyptus")
         self.add_copy_spec("/var/log/eucalyptus/*")
         self.add_copy_spec("/var/lib/eucalyptus/keys")
+        self.add_copy_spec("/var/run/eucalyptus")
         if os.path.isfile('/usr/bin/sha1sum'):
             self.get_cmd_output_now("find /var/lib/eucalyptus/keys \
                                   -type f -print | xargs -I {} sha1sum {}",
