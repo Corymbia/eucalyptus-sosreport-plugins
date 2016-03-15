@@ -1062,6 +1062,20 @@ class eucafrontend(Plugin, RedHatPlugin):
                                         " --dump cloud.network.network_configuration"
                                         + " --format yaml",
                                         suggest_filename="euctl-cloud.network.network_configuration.yaml")
+                self.get_cmd_output_now("/usr/bin/euctl -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport"
+                                        +
+                                        " --dump authentication.ldap_integration_configuration"
+                                        + " --format json",
+                                        suggest_filename="euctl-authentication.ldap_integration_configuration.json")
+                self.get_cmd_output_now("/usr/bin/euctl -U "
+                                        + empyrean_url
+                                        + " --region admin@sosreport"
+                                        +
+                                        " --dump authentication.ldap_integration_configuration"
+                                        + " --format yaml",
+                                        suggest_filename="euctl-authentication.ldap_integration_configuration.yaml")                
             if os.path.exists("/usr/bin/euserv-describe-services"):
                 self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
                                         + empyrean_url
