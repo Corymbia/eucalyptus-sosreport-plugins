@@ -50,5 +50,5 @@ class eucaconsole(Plugin, RedHatPlugin):
             - log file /var/log/eucaconsole.log
             """
             self.add_copy_spec("/etc/eucaconsole")
-            self.add_copy_spec("/var/log/eucaconsole.log*")
+            self.add_copy_spec("/var/log/eucaconsole*.log*")
         return
