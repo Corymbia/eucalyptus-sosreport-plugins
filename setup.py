@@ -32,7 +32,7 @@ import subprocess
 from setuptools import setup
 
 
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 
 # Check if this is a git repo; maybe we can get more precise version info
