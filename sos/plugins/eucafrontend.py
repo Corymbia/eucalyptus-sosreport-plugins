@@ -1079,19 +1079,19 @@ class eucafrontend(Plugin, RedHatPlugin):
             if os.path.exists("/usr/bin/euserv-describe-services"):
                 self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
                                         + empyrean_url
-                                        + " --by-type"
+                                        + " --group-by-type"
                                         + " --region admin@sosreport",
-                                        suggest_filename="euserv-describe-services--by-type")
+                                        suggest_filename="euserv-describe-services--group-by-type")
                 self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
                                         + empyrean_url
-                                        + " --by-zone"
+                                        + " --group-by-zone"
                                         + " --region admin@sosreport",
-                                        suggest_filename="euserv-describe-services--by-zone")
+                                        suggest_filename="euserv-describe-services--group-by-zone")
                 self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
                                         + empyrean_url
-                                        + " --by-host"
+                                        + " --group-by-host"
                                         + " --region admin@sosreport",
-                                        suggest_filename="euserv-describe-services--by-host")
+                                        suggest_filename="euserv-describe-services--group-by-host")
                 self.get_cmd_output_now("/usr/bin/euserv-describe-services -U "
                                         + empyrean_url
                                         + " --expert"
