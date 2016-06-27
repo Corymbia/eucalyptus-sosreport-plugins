@@ -15,10 +15,10 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from sos.plugins import Plugin, RedHatPlugin
+import os
 
-
-class eucacluster(Plugin, RedHatPlugin):
-    """Eucalyptus Cloud - log files
+class eucalogs(Plugin, RedHatPlugin):
+    """Eucalyptus Cloud - logfiles
     """
 
     def setup(self):
@@ -30,6 +30,6 @@ class eucacluster(Plugin, RedHatPlugin):
 
         # Collect logs for most Eucalyptus components
         if os.path.exists('/var/log/eucalyptus'):
-        	self.add_copy_spec('/var/log/eucalyptus')
+            self.add_copy_spec('/var/log/eucalyptus')
 
         return
