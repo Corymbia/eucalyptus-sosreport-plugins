@@ -27,9 +27,11 @@ class eucadb(Plugin, RedHatPlugin):
     def checkenabled(self):
         if (self.is_installed("eucalyptus-cloud")
                 and ((self.is_installed("postgresql91")
-                      and self.is_installed("postgresql91-server"))
-                     or (self.is_installed("postgresql92")
-                         and self.is_installed("postgresql92-server")))):
+                    and self.is_installed("postgresql91-server"))
+                    or (self.is_installed("postgresql92")
+                        and self.is_installed("postgresql92-server"))
+                    or (self.is_installed("postgresql")
+                        and self.is_installed("postgresql-server")))):
             return True
         return False
 
