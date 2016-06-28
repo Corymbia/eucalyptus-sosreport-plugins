@@ -1017,11 +1017,8 @@ class eucafrontend(Plugin, RedHatPlugin):
         self.get_cmd_output_now("/usr/sbin/euca-describe-storage-controllers -U "
                                 + empyrean_url + creds_info,
                                 suggest_filename="euca-describe-storage-ctrls")
-        if self.is_installed("eucalyptus-enterprise-vmware-broker"):
-            self.get_cmd_output_now("/usr/sbin/euca-describe-vmware-brokers -U "
-                                    + empyrean_url + creds_info,
-                                    suggest_filename="euca-describe-vmware-brks")
         euca2ools_version = self.checkversion('euca2ools')
+
         if re.match('^3+', euca2ools_version):
             self.get_cmd_output_now("/usr/sbin/euca-describe-cloudwatch -U "
                                     + empyrean_url + creds_info,
