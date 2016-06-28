@@ -1388,15 +1388,14 @@ class eucafrontend(Plugin, RedHatPlugin):
         self.add_alert("### Grab Eucalyptus IAM Service Information ###")
         self.eucalyptus_iam(tmp_dir)
         euca2ools_version = self.checkversion('euca2ools')
-        if re.match('^3+', euca2ools_version):
-            self.add_alert("### Grab AutoScaling Service Information ###")
-            self.eucalyptus_autoscaling()
-            self.add_alert("### Grab Load Balancing Service Information ###")
-            self.eucalyptus_elb()
-            self.add_alert("### Grab CloudWatch Service Information ###")
-            self.eucalyptus_cloudwatch()
-            self.add_alert("### Grab CloudFormation Service Information ###")
-            self.eucalyptus_cloudformation()
+        self.add_alert("### Grab AutoScaling Service Information ###")
+        self.eucalyptus_autoscaling()
+        self.add_alert("### Grab Load Balancing Service Information ###")
+        self.eucalyptus_elb()
+        self.add_alert("### Grab CloudWatch Service Information ###")
+        self.eucalyptus_cloudwatch()
+        self.add_alert("### Grab CloudFormation Service Information ###")
+        self.eucalyptus_cloudformation()
 
         self.cleanup(tmp_dir)
         return
