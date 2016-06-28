@@ -28,10 +28,6 @@ class eucafrontend(Plugin, RedHatPlugin):
     """Eucalyptus Cloud - Frontend
     """
 
-    # This affects all euca2ools commands we execute, hence the global placement;
-    # it saves us having to specify --region admin@localhost each time.
-    os.environ['AWS_DEFAULT_REGION'] = 'admin@localhost'
-
     def checkenabled(self):
         if (
             self.is_installed("euca2ools") and
@@ -1377,6 +1373,10 @@ class eucafrontend(Plugin, RedHatPlugin):
             self.get_cloudformation_resources(stack)
 
     def setup(self):
+        # This affects all euca2ools commands we execute, hence the global placement;
+        # it saves us having to specify --region admin@localhost each time.
+        os.environ['AWS_DEFAULT_REGION'] = 'admin@localhost'
+
         self.add_alert("### Check eucalyptus-cloud is running ###")
         self.clc_status()
         self.add_alert("### Grabbing eucalyptus/admin credentials ###")
