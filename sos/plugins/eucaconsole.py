@@ -47,8 +47,7 @@ class eucaconsole(Plugin, RedHatPlugin):
             """
             Grab following for Eucalyptus Console
             - config file under /etc/eucaconsole
-            - log file /var/log/eucaconsole.log
             """
             self.add_copy_spec("/etc/eucaconsole")
-            self.add_copy_spec("/var/log/eucaconsole*.log*")
+
         return
