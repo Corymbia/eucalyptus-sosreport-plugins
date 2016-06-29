@@ -32,7 +32,13 @@ class eucacore(Plugin, RedHatPlugin):
     def setup(self):
         self.add_copy_spec("/etc/eucalyptus")
         self.add_copy_spec("/var/lib/eucalyptus/keys")
-        self.add_copy_spec("/var/run/eucalyptus")
+        if os.path.exists('/var/run/eucalyptus'):
+          self.add_copy_spec("/var/run/eucalyptus/*.xml")
+          self.add_copy_spec("/var/run/eucalyptus/*.conf")
+          self.add_copy_spec("/var/run/eucalyptus/*.pid")
+          self.add_copy_spec("/var/run/eucalyptus/nc-stats")
+        if os.path.exists('/var/run/eucalyptus/net'):
+          self.add_copy_spec("/var/run/eucalyptus/net")
         if os.path.isfile('/usr/bin/sha1sum'):
             self.get_cmd_output_now("find /var/lib/eucalyptus/keys \
                                   -type f -print | xargs -I {} sha1sum {}",
