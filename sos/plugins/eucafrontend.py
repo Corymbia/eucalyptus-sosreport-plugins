@@ -587,6 +587,8 @@ class eucafrontend(Plugin, RedHatPlugin):
                                 suggest_filename="euserv-describe-node-controllers")
         self.get_cmd_output_now("/usr/bin/euserv-describe-service-types",
                                 suggest_filename="euserv-describe-service-types")
+        self.get_cmd_output_now("/usr/bin/euserv-describe-events",
+                                suggest_filename="euserv-describe-events")
         self.get_cmd_output_now("/usr/bin/euca-version")
 
     def eucalyptus_ec2(self):
