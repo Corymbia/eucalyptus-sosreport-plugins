@@ -21,6 +21,12 @@ class eucacluster(Plugin, RedHatPlugin):
     """Eucalyptus Cloud - Cluster Controller
     """
 
+    def default_enabled(self):
+        # We don't want this enabled by default, since collecting
+        # /var/lib/eucalyptus/CC can be quite big.
+        # Exception basis only.
+        return False
+
     def checkenabled(self):
         if self.is_installed("eucalyptus-cc"):
             return True
