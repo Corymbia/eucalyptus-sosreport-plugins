@@ -180,12 +180,11 @@ class eucadb(Plugin, RedHatPlugin):
 
         dbfiles_l = ["pg_hba.conf",
                      "pg_hba.conf.org",
-                     "pg_ident.conf"
+                     "pg_ident.conf",
                      "postgresql.conf",
                      "postgresql.conf.org"]
         for db_file in dbfiles_l:
             db_fullfile = db_datapath + '/' + db_file
-            if os.path.isfile(db_fullfile):
-                self.get_cmd_output_now(db_fullfile)
+            self.add_copy_spec(db_fullfile)
 
         return
