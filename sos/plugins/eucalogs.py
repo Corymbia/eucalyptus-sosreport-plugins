@@ -24,12 +24,9 @@ class eucalogs(Plugin, RedHatPlugin):
     def setup(self):
 
         # Collect eucaconsole logs
-        if os.path.exists('/var/log/eucaconsole.log') or \
-                os.path.exists('/var/log/eucaconsole_startup.log'):
-            self.add_copy_spec('/var/log/eucaconsole*.log*')
+        self.add_copy_spec('/var/log/eucaconsole*.log*')
 
         # Collect logs for most Eucalyptus components
-        if os.path.exists('/var/log/eucalyptus'):
-            self.add_copy_spec('/var/log/eucalyptus')
+        self.add_copy_spec('/var/log/eucalyptus')
 
         return
