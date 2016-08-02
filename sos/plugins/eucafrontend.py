@@ -753,39 +753,40 @@ class eucafrontend(Plugin, RedHatPlugin):
             self.get_cloudformation_resources(stack)
 
     def setup(self):
-        self.add_alert("### Check eucalyptus-cloud is running ###")
-        self.clc_status()
+        if self.checkenabled():
+            self.add_alert("### Check eucalyptus-cloud is running ###")
+            self.clc_status()
 
-        self.add_alert("### Setting up sosreport.ini credentials file ###")
-        ini_file = self.euca2ools_conf_setup()
+            self.add_alert("### Setting up sosreport.ini credentials file ###")
+            ini_file = self.euca2ools_conf_setup()
 
-        self.add_alert(
-            "### Adding eucalyptus/admin credentials to environment ###")
-        os_env = self.update_env()
-        os.environ = os_env
+            self.add_alert(
+                "### Adding eucalyptus/admin credentials to environment ###")
+            os_env = self.update_env()
+            os.environ = os_env
 
-        self.add_alert("### Grab Eucalyptus Core Service Information ###")
-        self.eucalyptus_core()
+            self.add_alert("### Grab Eucalyptus Core Service Information ###")
+            self.eucalyptus_core()
 
-        self.add_alert("### Grab Eucalyptus EC2 Service Information ###")
-        self.eucalyptus_ec2()
+            self.add_alert("### Grab Eucalyptus EC2 Service Information ###")
+            self.eucalyptus_ec2()
 
-        self.add_alert("### Grab Eucalyptus IAM Service Information ###")
-        self.eucalyptus_iam()
+            self.add_alert("### Grab Eucalyptus IAM Service Information ###")
+            self.eucalyptus_iam()
 
-        euca2ools_version = self.checkversion('euca2ools')
+            euca2ools_version = self.checkversion('euca2ools')
 
-        self.add_alert("### Grab AutoScaling Service Information ###")
-        self.eucalyptus_autoscaling()
+            self.add_alert("### Grab AutoScaling Service Information ###")
+            self.eucalyptus_autoscaling()
 
-        self.add_alert("### Grab Load Balancing Service Information ###")
-        self.eucalyptus_elb()
+            self.add_alert("### Grab Load Balancing Service Information ###")
+            self.eucalyptus_elb()
 
-        self.add_alert("### Grab CloudWatch Service Information ###")
-        self.eucalyptus_cloudwatch()
+            self.add_alert("### Grab CloudWatch Service Information ###")
+            self.eucalyptus_cloudwatch()
 
-        self.add_alert("### Grab CloudFormation Service Information ###")
-        self.eucalyptus_cloudformation()
+            self.add_alert("### Grab CloudFormation Service Information ###")
+            self.eucalyptus_cloudformation()
 
-        self.cleanup(ini_file)
+            self.cleanup(ini_file)
         return
