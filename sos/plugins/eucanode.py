@@ -28,22 +28,19 @@ class eucanode(Plugin, RedHatPlugin):
         return False
 
     def setup(self):
-        conf = file('/etc/eucalyptus/eucalyptus.conf')
-        for line in conf:
-            if 'EDGE' in line:
-                self.add_copy_spec("/var/lib/eucalyptus/*.xml")
+        if self.checkenabled():
+            self.add_copy_spec("/var/lib/eucalyptus/*.xml")
 
-        self.get_cmd_output_now("/usr/bin/virsh list",
-                              suggest_filename="virsh-list")
+            self.get_cmd_output_now("virsh list")
 
-        virsh_result = subprocess.Popen("virsh list | tail -n +3",
-                                        stdout=subprocess.PIPE, shell=True)
-        output, err = virsh_result.communicate()
-        reader = csv.DictReader(output.decode('ascii').splitlines(),
-                                delimiter=' ',
-                                skipinitialspace=True,
-                                fieldnames=['id', 'name', 'state'])
-        for row in reader:
-            self.get_cmd_output_now("virsh dumpxml " + row['id'],
-                                  suggest_filename=row['name'] + "_xml")
+            virsh_result = subprocess.Popen("virsh list | tail -n +3",
+                                            stdout=subprocess.PIPE, shell=True)
+            output, err = virsh_result.communicate()
+            reader = csv.DictReader(output.decode('ascii').splitlines(),
+                                    delimiter=' ',
+                                    skipinitialspace=True,
+                                    fieldnames=['id', 'name', 'state'])
+            for row in reader:
+                self.get_cmd_output_now("virsh dumpxml " + row['id'],
+                                        suggest_filename=row['name'] + "_xml")
         return
