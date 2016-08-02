@@ -200,22 +200,24 @@ class eucadb(Plugin, RedHatPlugin):
         return
 
     def setup(self):
-        db_datapath = "/var/lib/eucalyptus/db/data"
+        if self.checkenabled():
+            db_datapath = "/var/lib/eucalyptus/db/data"
 
-        self.add_alert(
-            "### Checking PostgreSQL validity, detecting bindir ###")
-        pg_bindir = self.check_postgres(db_datapath)
+            self.add_alert(
+                "### Checking PostgreSQL validity, detecting bindir ###")
+            pg_bindir = self.check_postgres(db_datapath)
 
-        self.add_alert(
-            "### Adding PostgreSQL path to environment ###")
-        os_env = self.update_env(pg_bindir)
-        os.environ = os_env
+            self.add_alert(
+                "### Adding PostgreSQL path to environment ###")
+            os_env = self.update_env(pg_bindir)
+            os.environ = os_env
 
-        self.add_alert(
-            "### Exporting PostgreSQL DB to files ###")
-        self.id_dbs_to_dump(db_datapath)
+            self.add_alert(
+                "### Exporting PostgreSQL DB to files ###")
+            self.id_dbs_to_dump(db_datapath)
 
-        self.add_alert(
-            "### Copying PostgreSQL config files ###")
-        self.copy_db_config_files(db_datapath)
+            self.add_alert(
+                "### Copying PostgreSQL config files ###")
+            self.copy_db_config_files(db_datapath)
+
         return

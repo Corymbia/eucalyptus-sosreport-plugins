@@ -3,7 +3,7 @@
 
 Summary:       A plugin to sosreport to collect data about Eucalyptus clouds
 Name:          eucalyptus-sos-plugins
-Version:       0.3.0
+Version:       0.4.0
 Release:       0%{?build_id:.%build_id}%{?dist}
 License:       GPLv2+
 Group:         Applications/System
