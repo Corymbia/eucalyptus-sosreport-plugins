@@ -81,5 +81,5 @@ class eucacore(Plugin, RedHatPlugin):
             # gather a recursive listing of /var/lib/eucalyptus, including
             # dot-files
             if os.path.exists('/var/lib/eucalyptus'):
-                self.add_command_output("ls -laR /var/lib/eucalyptus")
+                self.add_cmd_output("ls -laR /var/lib/eucalyptus")
         return
