@@ -68,7 +68,7 @@ class euca2ools_euform(Plugin, RedHatPlugin):
                 raise OSError(e)
         stacks = []
         for stack_info in slist.splitlines():
-            if re.search('arn', stack_info):
+            if re.search('^arn:', stack_info):
                 stack_id = "".join(stack_info.split())
                 stacks.append(stack_id)
         return stacks
