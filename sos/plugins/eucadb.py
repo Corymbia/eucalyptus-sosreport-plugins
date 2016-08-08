@@ -59,8 +59,8 @@ class eucadb(Plugin, RedHatPlugin):
                 raise OSError(e)
 
         # postgres_chk will always be a 2-element list, where the last element
-        # is always ''
-        pg_proc = postgres_chk[0].rstrip()    # get rid of the trailing newline, if any
+        # is always '' -- also get rid of the trailing newline, if any
+        pg_proc = postgres_chk[0].rstrip()
 
         if len(pg_proc) == 0:
             self.add_alert(
@@ -105,7 +105,7 @@ class eucadb(Plugin, RedHatPlugin):
         dump_cmd = "%s -c -o -h %s -p 8777 -U root %s" % (
             pg_dumpbin, db_datapath, db)
         dump_file = db + ".sql"
-        self.get_cmd_output_now(
+        self.add_cmd_output(
             dump_cmd,
             dump_file,
             timeout=600
@@ -150,12 +150,15 @@ class eucadb(Plugin, RedHatPlugin):
             ).communicate()[0].rstrip()
             schemalist_short = [x.split()[0]
                                 for x in schemalist_out.split('\n')]
+            # filter to include only euca* schemas
             schema_l = [x for x in schemalist_short if x[:4] == 'euca']
-            for schema in schema_l:
+            # filter to remove *backend schemas (to save on bloat)
+            schema_clean_l = [x for x in schema_l if x[-7:] != 'backend']
+            for schema in schema_clean_l:
                 sdump_cmd = "%s -c -o -h %s -p 8777 -U root %s -n %s" % (
                     pg_dumpbin, db_datapath, "eucalyptus_shared", schema)
                 sdump_file = schema + ".sql"
-                self.get_cmd_output_now(
+                self.add_cmd_output(
                     sdump_cmd,
                     sdump_file,
                     timeout=600
@@ -179,7 +182,7 @@ class eucadb(Plugin, RedHatPlugin):
              db_datapath,
              select_cmd,
              "database_events")
-        self.get_cmd_output_now(
+        self.add_cmd_output(
             sql_cmd,
             suggest_filename="database_sizes.txt",
             timeout=600
