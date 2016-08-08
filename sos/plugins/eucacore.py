@@ -33,13 +33,11 @@ class eucacore(Plugin, RedHatPlugin):
         if self.checkenabled():
             self.add_copy_spec("/etc/eucalyptus")
             self.add_copy_spec("/var/lib/eucalyptus/keys")
-            if os.path.exists('/var/run/eucalyptus'):
-                self.add_copy_spec("/var/run/eucalyptus/*.xml")
-                self.add_copy_spec("/var/run/eucalyptus/*.conf")
-                self.add_copy_spec("/var/run/eucalyptus/*.pid")
-                self.add_copy_spec("/var/run/eucalyptus/nc-stats")
-            if os.path.exists('/var/run/eucalyptus/net'):
-                self.add_copy_spec("/var/run/eucalyptus/net")
+            self.add_copy_spec("/var/run/eucalyptus/*.xml")
+            self.add_copy_spec("/var/run/eucalyptus/*.conf")
+            self.add_copy_spec("/var/run/eucalyptus/*.pid")
+            self.add_copy_spec("/var/run/eucalyptus/nc-stats")
+            self.add_copy_spec("/var/run/eucalyptus/net")
             if os.path.isfile('/usr/bin/sha1sum'):
                 self.add_cmd_output("find /var/lib/eucalyptus/keys \
                                     -type f -print | \
@@ -79,8 +77,7 @@ class eucacore(Plugin, RedHatPlugin):
                                     suggest_filename="tmp-dir-mode-fail")
             # gather a recursive listing of /var/lib/eucalyptus, including
             # dot-files
-            if os.path.exists('/var/lib/eucalyptus'):
-                self.add_cmd_output("ls -laR /var/lib/eucalyptus")
+            self.add_cmd_output("ls -laR /var/lib/eucalyptus")
             # collect failed eucanetd files from /tmp (issue #94)
             self.add_copy_spec("/tmp/euca_*_failed")
         return
