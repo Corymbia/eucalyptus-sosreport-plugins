@@ -81,4 +81,6 @@ class eucacore(Plugin, RedHatPlugin):
             # dot-files
             if os.path.exists('/var/lib/eucalyptus'):
                 self.add_cmd_output("ls -laR /var/lib/eucalyptus")
+            # collect failed eucanetd files from /tmp (issue #94)
+            self.add_copy_spec("/tmp/euca_*_failed")
         return
