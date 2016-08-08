@@ -41,43 +41,42 @@ class eucacore(Plugin, RedHatPlugin):
             if os.path.exists('/var/run/eucalyptus/net'):
                 self.add_copy_spec("/var/run/eucalyptus/net")
             if os.path.isfile('/usr/bin/sha1sum'):
-                self.get_cmd_output_now("find /var/lib/eucalyptus/keys \
-                                        -type f -print | xargs -I {} sha1sum {}",
-                                        suggest_filename="sha1sum-eucalyptus-keys")
+                self.add_cmd_output("find /var/lib/eucalyptus/keys \
+                                    -type f -print | \
+                                    xargs -I {} sha1sum {}",
+                                    suggest_filename="sha1sum-euca-keys")
             hprof_list = glob.glob('/var/log/eucalyptus/*.hprof')
             if hprof_list:
-                self.get_cmd_output_now("rm -rf /var/log/eucalyptus/*.hprof",
-                                        suggest_filename="hprof-removal")
+                self.add_cmd_output("rm -rf /var/log/eucalyptus/*.hprof",
+                                    suggest_filename="hprof-removal")
             if os.path.isfile('/sbin/iptables-save'):
-                self.get_cmd_output_now("/sbin/iptables-save --counters",
-                                        suggest_filename="iptables-save-counters")
+                self.add_cmd_output("/sbin/iptables-save --counters")
             if os.path.isfile('/sbin/ebtables-save'):
-                self.get_cmd_output_now("/sbin/ebtables-save --counters",
-                                        suggest_filename="ebtables-save-counters")
+                self.add_cmd_output("/sbin/ebtables-save --counters")
             if os.path.isfile('/usr/sbin/ipset'):
-                self.get_cmd_output_now("/usr/sbin/ipset -s -o xml save",
-                                        suggest_filename="ipset-xml-save")
+                self.add_cmd_output("/usr/sbin/ipset -s -o xml save",
+                                    suggest_filename="ipset-xml-save")
             if os.path.isfile('/etc/pki/tls/certs/eucalyptus-enterprise.crt'):
-                self.get_cmd_output_now("openssl x509 -text -in "
-                                        + "/etc/pki/tls/certs/eucalyptus"
-                                        + "-enterprise.crt"
-                                        + " | grep -A 2 Validity",
-                                        suggest_filename="euca-enterprise-cert"
-                                        + "-validity")
-                self.get_cmd_output_now("openssl x509 -text -in "
-                                        + "/etc/pki/tls/certs/eucalyptus"
-                                        + "-enterprise.crt"
-                                        + " | grep -A 14 X509v3",
-                                        suggest_filename="euca-enterprise-cert"
-                                        + "-compliance")
+                self.add_cmd_output("openssl x509 -text -in "
+                                    + "/etc/pki/tls/certs/eucalyptus"
+                                    + "-enterprise.crt"
+                                    + " | grep -A 2 Validity",
+                                    suggest_filename="euca-enterprise-cert"
+                                    + "-validity")
+                self.add_cmd_output("openssl x509 -text -in "
+                                    + "/etc/pki/tls/certs/eucalyptus"
+                                    + "-enterprise.crt"
+                                    + " | grep -A 14 X509v3",
+                                    suggest_filename="euca-enterprise-cert"
+                                    + "-compliance")
             # check /tmp dir for sane owner/group/mode
             # mode '1777' also checks for sticky bit
             mode = os.stat("/tmp")
             if ((mode.st_uid != 0)
                     or (mode.st_gid != 0)
                     or (oct(mode.st_mode)[-4:] != '1777')):
-                self.get_cmd_output_now("ls -ld /tmp",
-                                        suggest_filename="tmp-dir-mode-fail")
+                self.add_cmd_output("ls -ld /tmp",
+                                    suggest_filename="tmp-dir-mode-fail")
             # gather a recursive listing of /var/lib/eucalyptus, including
             # dot-files
             if os.path.exists('/var/lib/eucalyptus'):
