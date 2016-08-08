@@ -59,8 +59,8 @@ class eucadb(Plugin, RedHatPlugin):
                 raise OSError(e)
 
         # postgres_chk will always be a 2-element list, where the last element
-        # is always ''
-        pg_proc = postgres_chk[0].rstrip()    # get rid of the trailing newline, if any
+        # is always '' -- also get rid of the trailing newline, if any
+        pg_proc = postgres_chk[0].rstrip()
 
         if len(pg_proc) == 0:
             self.add_alert(
