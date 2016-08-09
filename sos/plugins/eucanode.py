@@ -31,7 +31,7 @@ class eucanode(Plugin, RedHatPlugin):
         if self.checkenabled():
             self.add_copy_spec("/var/lib/eucalyptus/*.xml")
 
-            self.get_cmd_output_now("virsh list")
+            self.add_cmd_output("virsh list")
 
             virsh_result = subprocess.Popen("virsh list | tail -n +3",
                                             stdout=subprocess.PIPE, shell=True)
@@ -41,6 +41,6 @@ class eucanode(Plugin, RedHatPlugin):
                                     skipinitialspace=True,
                                     fieldnames=['id', 'name', 'state'])
             for row in reader:
-                self.get_cmd_output_now("virsh dumpxml " + row['id'],
-                                        suggest_filename=row['name'] + "_xml")
+                self.add_cmd_output("virsh dumpxml " + row['id'],
+                                    suggest_filename=row['name'] + "_xml")
         return

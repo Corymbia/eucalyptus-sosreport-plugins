@@ -174,12 +174,12 @@ class euca2ools_euare(Plugin, RedHatPlugin):
         """
         Grab the resources of the groups in the Euare account passed in
         """
-        self.get_cmd_output_now("euare-grouplistusers --as-account "
-                                + account + " -g " + group)
-        self.get_cmd_output_now("euare-grouplistpolicies \
+        self.add_cmd_output("euare-grouplistusers --as-account "
+                            + account + " -g " + group)
+        self.add_cmd_output("euare-grouplistpolicies \
                               --as-account "
-                                + account + " -g " + group
-                                + " -v")
+                            + account + " -g " + group
+                            + " -v")
 
     def get_rolelist(self, account):
         """
@@ -212,11 +212,11 @@ class euca2ools_euare(Plugin, RedHatPlugin):
         """
         Grab the resources of the role in the Euare account passed in
         """
-        self.get_cmd_output_now("euare-rolelistpolicies --as-account "
-                                + account + " -r " + role)
-        self.get_cmd_output_now("euare-instanceprofilelistforrole "
-                                + "--as-account "
-                                + account + " -r " + role)
+        self.add_cmd_output("euare-rolelistpolicies --as-account "
+                            + account + " -r " + role)
+        self.add_cmd_output("euare-instanceprofilelistforrole "
+                            + "--as-account "
+                            + account + " -r " + role)
 
     def get_instprofile(self, account):
         """
