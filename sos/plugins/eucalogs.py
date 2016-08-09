@@ -17,6 +17,7 @@
 from sos.plugins import Plugin, RedHatPlugin
 import os
 
+
 class eucalogs(Plugin, RedHatPlugin):
     """Eucalyptus Cloud - logfiles
     """
