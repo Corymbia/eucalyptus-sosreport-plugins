@@ -17,6 +17,7 @@
 from sos.plugins import Plugin, RedHatPlugin
 import os
 import os.path
+import euca_common
 
 
 class euca2ools_euscale(Plugin, RedHatPlugin):
@@ -34,16 +35,6 @@ class euca2ools_euscale(Plugin, RedHatPlugin):
             return True
         return False
 
-    def update_env(self):
-        os.environ['AWS_DEFAULT_REGION'] = 'admin@localhost'
-
-        # let's also set a strict PATH for easy/trusted cmd access
-        os_path = "/sbin:/bin:/usr/sbin:/usr/bin"
-        os.environ['PATH'] = os_path
-
-        os_env = os.environ.copy()
-        return os_env
-
     def eucalyptus_autoscaling(self):
         self.add_cmd_output([
             "euscale-describe-auto-scaling-instances verbose --show-long",
@@ -60,7 +51,7 @@ class euca2ools_euscale(Plugin, RedHatPlugin):
         if self.checkenabled():
             self.add_alert(
                 "### Adding eucalyptus/admin credentials to environment ###")
-            os_env = self.update_env()
+            os_env = euca_common.update_env()
             os.environ = os_env
 
             self.add_alert("### Grab AutoScaling Service Information ###")
