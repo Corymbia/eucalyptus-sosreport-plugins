@@ -46,6 +46,27 @@ rm $RPM_BUILD_ROOT/%{python_sitelib}/sos/plugins/__init__.py*
 
 
 %changelog
+* Fri Aug 12 2016 Jim Carroll <jim.carroll@hpe.com> - 0.4.1
+- Improved creds checking/setup via environment variables
+- Separated the common env vars check/setup block for all euca2ools_*
+  plugins to new euca_common module
+
+* Tue Aug 2 2016 Jim Carroll <jim.carroll@hpe.com> - 0.4.0
+- General code cleanup and data collection optimizations (mainly no longer
+  collecting rarely used items of either exceptional size or which take
+  a long time to collect)
+- Added support for RHEL/CentOS 7
+- Refactored eucafrontend into separate euca2ools_* plugins; set
+  euca2ools_euare to be 'optional' (not implicitly collected) by default
+
+* Wed Jun 29 2016 Jim Carroll <jim.carroll@hpe.com> - 0.3.0
+- Removed support for EOL items, such as VMware
+- Changed PostgreSQL code to be more dynamic
+- Separated logfile collection into its own plugin
+- Improved eucaconsole logfile collection
+- Added collection of authentication.ldap_integration_configuration
+  and cloud.network.network_configuration (via euctl)
+
 * Fri Jan 29 2016 Jim Carroll <jim.carroll@hpe.com> - 0.2.2
 - Added support for new commands available in 3.x
 - Added NC collection of GNI and related
