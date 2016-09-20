@@ -101,7 +101,9 @@ class euca2ools_core(Plugin, RedHatPlugin):
             "euserv-describe-node-controllers",
             "euserv-describe-service-types",
             "euserv-describe-events",
-            "esi-describe-images"
+            "esi-describe-images",
+            "esi-manage-stack -a check imaging",
+            "esi-manage-stack -a check database"
         ])
 
     def eucalyptus_ec2(self):
