@@ -17,6 +17,8 @@
 from sos.plugins import Plugin, RedHatPlugin
 import os
 import glob
+import subprocess
+import shlex
 
 
 class eucacore(Plugin, RedHatPlugin):
@@ -28,6 +30,31 @@ class eucacore(Plugin, RedHatPlugin):
         if self.is_installed("eucalyptus"):
             return True
         return False
+
+    def check_yum_history(self):
+        self.add_cmd_output("yum history")
+        yum_cmd = "yum history"
+        yum_cmd_l = shlex.split(yum_cmd)
+        (yum_hist_out, q) = \
+            subprocess.Popen(yum_cmd_l,
+                             stdout=subprocess.PIPE).communicate()
+        try:
+            # yum history first outputs 3 lines of info/headers
+            # Fourth row, first col, should be most recent tx
+            yum_hist_out_l = yum_hist_out.splitlines()
+            yum_last_tx_row = yum_hist_out_l[3].split()
+            yum_last_tx_id_str = yum_last_tx_row[0]
+            yum_last_tx_id = int(yum_last_tx_id_str)
+            for tx_id in range(1, yum_last_tx_id + 1):
+                self.add_cmd_output("yum history info %d" % tx_id)
+        except ValueError:
+            self.add_alert("Failed to parse yum history")
+        return
+
+    def check_python_pip(self):
+        if os.path.exists("/usr/bin/pip"):
+            self.add_cmd_output("pip list")
+        return
 
     def setup(self):
         if self.checkenabled():
@@ -80,4 +107,6 @@ class eucacore(Plugin, RedHatPlugin):
             self.add_cmd_output("ls -laR /var/lib/eucalyptus")
             # collect failed eucanetd files from /tmp (issue #94)
             self.add_copy_spec("/tmp/euca_*_failed")
+            self.check_yum_history()
+            self.check_python_pip()
         return
