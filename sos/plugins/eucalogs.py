@@ -30,4 +30,10 @@ class eucalogs(Plugin, RedHatPlugin):
         # Collect logs for most Eucalyptus components
         self.add_copy_spec('/var/log/eucalyptus')
 
+        # Collect logs for MidoNet components
+        self.add_copy_spec('/var/log/cassandra')
+        self.add_copy_spec('/var/log/midolman')
+        self.add_copy_spec('/var/log/tomcat')
+        self.add_copy_spec('/var/log/zookeeper')
+
         return
