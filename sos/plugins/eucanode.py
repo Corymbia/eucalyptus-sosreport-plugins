@@ -29,7 +29,12 @@ class eucanode(Plugin, RedHatPlugin):
 
     def setup(self):
         if self.checkenabled():
-            self.add_copy_spec("/var/lib/eucalyptus/*.xml")
+            self.add_copy_spec(
+                "/var/lib/eucalyptus/*.xml")
+            self.add_copy_spec(
+                "/var/lib/eucalyptus/instances/cache/.blobstore")
+            self.add_copy_spec(
+                "/var/lib/eucalyptus/instances/work/.blobstore")
 
             self.add_cmd_output("virsh list")
 
