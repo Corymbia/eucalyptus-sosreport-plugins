@@ -15,6 +15,8 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
+import subprocess
+import string
 
 from sos.plugins import Plugin, RedHatPlugin
 
@@ -31,6 +33,18 @@ class eucamidonet(Plugin, RedHatPlugin):
         # finally, share back the env var changes to the env
         os_env = os.environ.copy()
         return os_env
+
+    def get_second_col(self, cmd):
+        cmd_l = cmd.split()
+
+        cmd_out, v = subprocess.Popen(
+            cmd_l,
+            stdout=subprocess.PIPE,
+            ).communicate()
+
+        cmd_out_l = cmd_out.splitlines()
+        col_l = map(lambda x: x.split()[1], cmd_out_l)
+        return col_l
 
     # TODO: add some stuff specific to MidoNet
     def checkenabled(self):
@@ -53,14 +67,43 @@ class eucamidonet(Plugin, RedHatPlugin):
 
     def midonet_basics(self):
         self.add_cmd_output([
-            "midonet-cli -e 'list router'",
-            "midonet-cli -e 'list host'",
-            "midonet-cli -e 'list bridge'",
-            "midonet-cli -e 'list port-group'",
-            "midonet-cli -e 'list chain'",
-            "midonet-cli -e 'list tunnel-zone'",
+            "midonet-cli -e list router",
+            "midonet-cli -e list host",
+            "midonet-cli -e list bridge",
+            "midonet-cli -e list port-group",
+            "midonet-cli -e list chain",
+            "midonet-cli -e list tunnel-zone",
             "mn-conf dump -s"
             ])
+
+    def midonet_advanced(self):
+        # Format of cmd_l strings:
+        # A1, A2, B1, B2, B3
+        # where A and B are separate but related
+        # and B uses output derived from A
+        cmd_l = [
+            "list router router list route",
+            "list tunnel-zone tunnel-zone list member",
+            "list host host list binding",
+            "list port port list bgp"
+            ]
+        # interpolating the string into nested commands
+        for cmd_str in cmd_l:
+            cmd_str_l = cmd_str.split()
+            first_cmd_l = cmd_str_l[:2]
+            second_cmd_l = cmd_str_l[2:]
+            first_cmd = 'midonet-cli -e ' + string.join(first_cmd_l, ' ')
+            results_l = self.get_second_col(first_cmd)
+
+            for result in results_l:
+                new_cmd = "midonet-cli -e %s %s %s %s" % (
+                    second_cmd_l[0],
+                    result,
+                    second_cmd_l[1],
+                    second_cmd_l[2]
+                    )
+
+                self.add_cmd_output(new_cmd)
 
     def quagga_info(self):
         self.add_cmd_output([
@@ -75,6 +118,7 @@ class eucamidonet(Plugin, RedHatPlugin):
 
             self.mido_copy_files()
             self.midonet_basics()
+            self.midonet_advanced()
             self.quagga_info()
 
         # return
