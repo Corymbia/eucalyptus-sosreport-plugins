@@ -3,7 +3,7 @@
 
 Summary:       A plugin to sosreport to collect data about Eucalyptus clouds
 Name:          eucalyptus-sos-plugins
-Version:       0.4.1
+Version:       0.5.0
 Release:       0%{?build_id:.%build_id}%{?dist}
 License:       GPLv2+
 Group:         Applications/System
@@ -46,6 +46,11 @@ rm $RPM_BUILD_ROOT/%{python_sitelib}/sos/plugins/__init__.py*
 
 
 %changelog
+* Fri Nov 11 2016 Jim Carroll <jim.carroll@hpe.com> - 0.5.0
+- First effort to add Midonet and related commands
+  (new eucamidonet plugin)
+- Added .blobstore files to be collected (eucanode)
+
 * Fri Aug 12 2016 Jim Carroll <jim.carroll@hpe.com> - 0.4.1
 - Improved creds checking/setup via environment variables
 - Separated the common env vars check/setup block for all euca2ools_*
