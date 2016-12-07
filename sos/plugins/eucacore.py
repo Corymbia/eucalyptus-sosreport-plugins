@@ -79,8 +79,10 @@ class eucacore(Plugin, RedHatPlugin):
             if os.path.isfile('/sbin/ebtables-save'):
                 self.add_cmd_output("/sbin/ebtables-save --counters")
             if os.path.isfile('/usr/sbin/ipset'):
-                self.add_cmd_output("/usr/sbin/ipset -s -o xml save",
-                                    suggest_filename="ipset-xml-save")
+                self.add_cmd_output([
+                    "ipset -o xml list",
+                    "ipset list"
+                ])
             if os.path.isfile('/etc/pki/tls/certs/eucalyptus-enterprise.crt'):
                 self.add_cmd_output("openssl x509 -text -in "
                                     + "/etc/pki/tls/certs/eucalyptus"
