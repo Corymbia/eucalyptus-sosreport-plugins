@@ -93,6 +93,7 @@ class euca2ools_euform(Plugin, RedHatPlugin):
         self.add_cmd_output("euform-describe-stacks verbose --show-long")
         for stack in self.get_stacks():
             self.get_cloudformation_resources(stack)
+        self.add_cmd_output("euform-list-stacks")
 
     def setup(self):
         if self.checkenabled():
