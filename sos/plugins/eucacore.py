@@ -63,6 +63,8 @@ class eucacore(Plugin, RedHatPlugin):
             self.add_copy_spec("/var/run/eucalyptus/*.xml")
             self.add_copy_spec("/var/run/eucalyptus/*.conf")
             self.add_copy_spec("/var/run/eucalyptus/*.pid")
+            self.add_copy_spec(
+                "/var/run/eucalyptus/global_network_info.version")
             self.add_copy_spec("/var/run/eucalyptus/nc-stats")
             self.add_copy_spec("/var/run/eucalyptus/net")
             if os.path.isfile('/usr/bin/sha1sum'):
