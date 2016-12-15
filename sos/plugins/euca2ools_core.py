@@ -94,6 +94,12 @@ class euca2ools_core(Plugin, RedHatPlugin):
             "euctl"
             + " --dump authentication.ldap_integration_configuration"
             + " --format yaml",
+            "euctl"
+            + " --dump region.region_configuration"
+            + " --format json",
+            "euctl"
+            + " --dump region.region_configuration"
+            + " --format yaml",
             "euserv-describe-services --group-by-type",
             "euserv-describe-services --group-by-zone",
             "euserv-describe-services --group-by-host",
