@@ -100,6 +100,11 @@ class euca2ools_core(Plugin, RedHatPlugin):
             "euctl"
             + " --dump region.region_configuration"
             + " --format yaml",
+            "euctl"
+            + " -U http://localhost:8773/services/Properties"
+            + " euca='com.eucalyptus.auth.principal.UserFullName.userIdMap"
+            + ".asMap().entrySet()"
+            + ".findAll{ entry -> entry.key != entry.value.userId }'",
             "euserv-describe-services --group-by-type",
             "euserv-describe-services --group-by-zone",
             "euserv-describe-services --group-by-host",
