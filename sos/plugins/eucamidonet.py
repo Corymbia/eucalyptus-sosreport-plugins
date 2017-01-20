@@ -25,6 +25,11 @@ class eucamidonet(Plugin, RedHatPlugin):
     """MidoNet commands for Eucalyptus VPC
     """
 
+    # this string will form the basis for a number of commands:
+    global mn_cmd
+    mn_cmd = "midonet-cli -A" \
+        + " -e --midonet-url=http://127.0.0.1:8080/midonet-api "
+
     def update_env(self):
         # let's set a strict PATH for easy/trusted cmd access
         os_path = "/sbin:/bin:/usr/sbin:/usr/bin"
@@ -47,11 +52,17 @@ class eucamidonet(Plugin, RedHatPlugin):
         return col_l
 
     # TODO: add some stuff specific to MidoNet
-    def checkenabled(self):
+    def checkenabled_midonet(self):
         if (
             self.is_installed("python-midonetclient") and
-            self.is_installed("midolman") and
-            self.is_installed("midonet-api")
+            self.is_installed("midolman")
+        ):
+            return True
+        return False
+
+    def checkenabled_quagga(self):
+        if (
+            self.is_installed("quagga")
         ):
             return True
         return False
@@ -67,14 +78,21 @@ class eucamidonet(Plugin, RedHatPlugin):
 
     def midonet_basics(self):
         self.add_cmd_output([
-            "midonet-cli -e list router",
-            "midonet-cli -e list host",
-            "midonet-cli -e list bridge",
-            "midonet-cli -e list port-group",
-            "midonet-cli -e list chain",
-            "midonet-cli -e list tunnel-zone",
+            mn_cmd + "list router",
+            mn_cmd + "list host",
+            mn_cmd + "list bridge",
+            mn_cmd + "list port-group",
+            mn_cmd + "list port",
+            mn_cmd + "list chain",
+            mn_cmd + "list tunnel-zone",
             "mn-conf dump -s"
             ])
+
+    def mmdpctl(self):
+        self.add_cmd_output([
+            "mm-dpctl datapath --show midonet",
+            "mm-dpctl datapath --dump midonet"
+        ])
 
     def midonet_advanced(self):
         # Format of cmd_l strings:
@@ -85,18 +103,19 @@ class eucamidonet(Plugin, RedHatPlugin):
             "list router router list route",
             "list tunnel-zone tunnel-zone list member",
             "list host host list binding",
-            "list port port list bgp"
+            "list router router list bgp-peer"
             ]
         # interpolating the string into nested commands
         for cmd_str in cmd_l:
             cmd_str_l = cmd_str.split()
             first_cmd_l = cmd_str_l[:2]
             second_cmd_l = cmd_str_l[2:]
-            first_cmd = 'midonet-cli -e ' + string.join(first_cmd_l, ' ')
+            first_cmd = mn_cmd + string.join(first_cmd_l, ' ')
             results_l = self.get_second_col(first_cmd)
 
             for result in results_l:
-                new_cmd = "midonet-cli -e %s %s %s %s" % (
+                new_cmd = "%s %s %s %s %s" % (
+                    mn_cmd,
                     second_cmd_l[0],
                     result,
                     second_cmd_l[1],
@@ -112,13 +131,16 @@ class eucamidonet(Plugin, RedHatPlugin):
         ])
 
     def setup(self):
-        # if self.checkenabled():
-            os_env = self.update_env()
-            os.environ = os_env
+        os_env = self.update_env()
+        os.environ = os_env
 
+        if self.checkenabled_midonet():
             self.mido_copy_files()
             self.midonet_basics()
             self.midonet_advanced()
-            self.quagga_info()
+            self.mmdpctl()
+        return
 
-        # return
+        if self.checkenabled_quagga():
+            self.quagga_info()
+        return
