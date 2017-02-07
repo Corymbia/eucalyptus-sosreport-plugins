@@ -83,16 +83,28 @@ class euca2ools_core(Plugin, RedHatPlugin):
             "euca-describe-walrusbackends",
             "euctl -A",
             "euctl"
+            + " --dump authentication.ldap_integration_configuration"
+            + " --format json",
+            "euctl"
+            + " --dump authentication.ldap_integration_configuration"
+            + " --format yaml",
+            "euctl"
             + " --dump cloud.network.network_configuration"
             + " --format json",
             "euctl"
             + " --dump cloud.network.network_configuration"
             + " --format yaml",
             "euctl"
-            + " --dump authentication.ldap_integration_configuration"
+            + " --dump cloudformation.swf_client_config"
             + " --format json",
             "euctl"
-            + " --dump authentication.ldap_integration_configuration"
+            + " --dump cloudformation.swf_client_config"
+            + " --format yaml",
+            "euctl"
+            + " --dump cloudformation.swf_workflow_worker_config"
+            + " --format json",
+            "euctl"
+            + " --dump cloudformation.swf_workflow_worker_config"
             + " --format yaml",
             "euctl"
             + " --dump region.region_configuration"
