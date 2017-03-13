@@ -28,7 +28,7 @@ class eucamidonet(Plugin, RedHatPlugin):
     # this string will form the basis for a number of commands:
     global mn_cmd
     mn_cmd = "midonet-cli -A" \
-        + " -e --midonet-url=http://127.0.0.1:8080/midonet-api "
+        + " -e --midonet-url=http://127.0.0.1:8181/midonet-api "
 
     def update_env(self):
         # let's set a strict PATH for easy/trusted cmd access
