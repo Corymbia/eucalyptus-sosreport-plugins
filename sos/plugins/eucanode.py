@@ -35,6 +35,8 @@ class eucanode(Plugin, RedHatPlugin):
                 "/var/lib/eucalyptus/instances/cache/.blobstore")
             self.add_copy_spec(
                 "/var/lib/eucalyptus/instances/work/.blobstore")
+            self.add_copy_spec(
+                "/var/lib/eucalyptus/instances/work/*/*/console.log")
 
             self.add_cmd_output("virsh list")
 
