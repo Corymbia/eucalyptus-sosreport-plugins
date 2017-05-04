@@ -76,6 +76,7 @@ class euca2ools_core(Plugin, RedHatPlugin):
             "euca-describe-storage-controllers",
             "euca-describe-cloudwatch",
             "euca-describe-compute",
+            "euca-describe-bundle-tasks",
             "euca-describe-euare",
             "euca-describe-loadbalancing",
             "euca-describe-object-storage-gateways",
