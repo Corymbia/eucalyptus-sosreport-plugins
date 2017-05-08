@@ -3,7 +3,7 @@
 
 Summary:       A plugin to sosreport to collect data about Eucalyptus clouds
 Name:          eucalyptus-sos-plugins
-Version:       0.5.0
+Version:       0.5.1
 Release:       0%{?build_id:.%build_id}%{?dist}
 License:       GPLv2+
 Group:         Applications/System
@@ -46,6 +46,9 @@ rm $RPM_BUILD_ROOT/%{python_sitelib}/sos/plugins/__init__.py*
 
 
 %changelog
+* Mon May 08 2017 Garrett Holmstrom <gholms@dxc.com> - 0.5.1
+- Bump rpm Version tag
+
 * Mon May 08 2017 Jim Carroll <jim.carroll@dxc.com> - 0.5.1
 - Improvements to Midonet data collection
 - Improvements to basic Eucalyptus data collection
