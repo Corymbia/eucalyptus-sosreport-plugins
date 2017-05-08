@@ -46,6 +46,12 @@ rm $RPM_BUILD_ROOT/%{python_sitelib}/sos/plugins/__init__.py*
 
 
 %changelog
+* Mon May 08 2017 Jim Carroll <jim.carroll@dxc.com> - 0.5.1
+- Improvements to Midonet data collection
+- Improvements to basic Eucalyptus data collection
+- Added federation data collection
+- Minor refactoring/cleanup
+
 * Fri Nov 11 2016 Jim Carroll <jim.carroll@hpe.com> - 0.5.0
 - First effort to add Midonet and related commands
   (new eucamidonet plugin)
